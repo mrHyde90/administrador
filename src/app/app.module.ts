@@ -11,12 +11,17 @@ import {
   MatButtonModule,
   MatToolbarModule,
   MatExpansionModule,
-  MatProgressSpinnerModule
+  MatProgressSpinnerModule,
+  MatSelectModule,
+  MatMenuModule,
+  MatDividerModule
 } from "@angular/material";
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
@@ -26,7 +31,10 @@ import {
   	MatButtonModule,
   	MatToolbarModule,
   	MatExpansionModule,
-  	MatProgressSpinnerModule
+  	MatProgressSpinnerModule,
+    MatSelectModule,
+    MatMenuModule,
+    MatDividerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
