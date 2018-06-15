@@ -14,14 +14,17 @@ import {
   MatProgressSpinnerModule,
   MatSelectModule,
   MatMenuModule,
-  MatDividerModule
+  MatDividerModule,
+  MatGridListModule
 } from "@angular/material";
 import { HeaderComponent } from './header/header.component';
+import { InstrumentListComponent } from './instruments/instrument-list/instrument-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent
+    HeaderComponent,
+    InstrumentListComponent
   ],
   imports: [
     BrowserModule,
@@ -34,7 +37,8 @@ import { HeaderComponent } from './header/header.component';
   	MatProgressSpinnerModule,
     MatSelectModule,
     MatMenuModule,
-    MatDividerModule
+    MatDividerModule,
+    MatGridListModule
   ],
   providers: [],
   bootstrap: [AppComponent]
