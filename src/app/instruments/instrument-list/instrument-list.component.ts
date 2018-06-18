@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import {InstrumentModel} from '../instrument.model';
+import {ModalComponent} from '../../modal/modal.component';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 
 @Component({
   selector: 'app-instrument-list',
@@ -7,6 +9,8 @@ import {InstrumentModel} from '../instrument.model';
   styleUrls: ['./instrument-list.component.css']
 })
 export class InstrumentListComponent implements OnInit {
+	cantidadPrestada: string = "";
+	
 	instruments:InstrumentModel[] = [
 		{name: "Foco Led", instrumentImage: "https://cdn.sparkfun.com//assets/parts/3/3/8/0/09590-01.jpg", cantidad: 10, categories: ["Diodos"]},
 		{name: "Martillo", instrumentImage: "https://ferreteriavidri.com/images/items/large/9781.jpg", cantidad: 3, categories: ["Herramientas"]},
@@ -19,9 +23,23 @@ export class InstrumentListComponent implements OnInit {
 		{name: "Cargador", instrumentImage: "https://images-na.ssl-images-amazon.com/images/I/61j%2B0A3cxBL._SL1500_.jpg", cantidad: 4, categories: ["Transistores"]}
 	];
 
-  constructor() { }
+  constructor(public dialog: MatDialog) { }
 
   ngOnInit() {
+  }
+
+  openDialog(): void{
+  	let dialogRef = this.dialog.open(ModalComponent, {
+      width: '250px',
+      data: { name: this.instruments[2].name, cantidad: this.instruments[2].cantidad }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      //this.cantidadPrestada = result;
+      console.log(typeof(result));
+      console.log(result);
+    });
   }
 
 }

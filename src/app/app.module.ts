@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
+import { FormsModule } from "@angular/forms";
 
 import { AppComponent } from './app.component';
 
@@ -15,17 +16,21 @@ import {
   MatSelectModule,
   MatMenuModule,
   MatDividerModule,
-  MatGridListModule
+  MatGridListModule,
+  MatDialogModule
 } from "@angular/material";
 import { HeaderComponent } from './header/header.component';
 import { InstrumentListComponent } from './instruments/instrument-list/instrument-list.component';
+import {ModalComponent} from './modal/modal.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    InstrumentListComponent
+    InstrumentListComponent,
+    ModalComponent
   ],
+  entryComponents: [InstrumentListComponent, ModalComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -38,7 +43,9 @@ import { InstrumentListComponent } from './instruments/instrument-list/instrumen
     MatSelectModule,
     MatMenuModule,
     MatDividerModule,
-    MatGridListModule
+    MatGridListModule,
+    MatDialogModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

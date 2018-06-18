@@ -1,0 +1,18 @@
+<h1 mat-dialog-title>{{data.name}}</h1>
+<div mat-dialog-content>
+  <p>Cantidad: {{data.cantidad}} </p>
+  <p>(Unicamente 1 o 2 digitos)</p>
+  <div [ngStyle]="{'display': data.cantidad == 0 ? 'block' : 'none' }">
+        <p><b>Por ahora no se encuentra el articulo</b></p>
+    </div>
+  <mat-form-field>
+    <input matInput #inputPrestar [disabled]="data.cantidad == 0" >
+  </mat-form-field>
+  <div *ngIf="!buenFormato">
+  	<p><b>{{textoFormato}}</b></p>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button (click)="onPrestar(inputPrestar)" [disabled]="data.cantidad == 0" cdkFocusInitial>Ok</button>
+</div>
