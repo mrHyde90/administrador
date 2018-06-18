@@ -1,45 +1,52 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import {InstrumentModel} from '../instrument.model';
 import {ModalComponent} from '../../modal/modal.component';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import { Subscription } from 'rxjs';
+import {InstrumentsService} from '../instruments.service';
 
 @Component({
   selector: 'app-instrument-list',
   templateUrl: './instrument-list.component.html',
   styleUrls: ['./instrument-list.component.css']
 })
-export class InstrumentListComponent implements OnInit {
-	cantidadPrestada: string = "";
+export class InstrumentListComponent implements OnInit, OnDestroy {
+  private subsIns: Subscription;
 	
-	instruments:InstrumentModel[] = [
-		{name: "Foco Led", instrumentImage: "https://cdn.sparkfun.com//assets/parts/3/3/8/0/09590-01.jpg", cantidad: 10, categories: ["Diodos"]},
-		{name: "Martillo", instrumentImage: "https://ferreteriavidri.com/images/items/large/9781.jpg", cantidad: 3, categories: ["Herramientas"]},
-		{name: "Condensador", instrumentImage: "http://www.teslaelectronics.cl/518-large_default/condensador-electrolitico.jpg", cantidad: 12, categories: ["Capacitores"]},
-		{name: "Arduino", instrumentImage: "http://cdn-tienda.bricogeek.com/1157-thickbox_default/arduino-uno.jpg", cantidad: 0, categories: ["Herramientas"]},
-		{name: "Cargador", instrumentImage: "https://images-na.ssl-images-amazon.com/images/I/61j%2B0A3cxBL._SL1500_.jpg", cantidad: 4, categories: ["Transistores"]},
-		{name: "Foco Led", instrumentImage: "https://cdn.sparkfun.com//assets/parts/3/3/8/0/09590-01.jpg", cantidad: 10, categories: ["Diodos"]},
-		{name: "Martillo", instrumentImage: "https://ferreteriavidri.com/images/items/large/9781.jpg", cantidad: 3, categories: ["Herramientas"]},
-		{name: "Condensador", instrumentImage: "http://www.teslaelectronics.cl/518-large_default/condensador-electrolitico.jpg", cantidad: 12, categories: ["Capacitores"]},
-		{name: "Cargador", instrumentImage: "https://images-na.ssl-images-amazon.com/images/I/61j%2B0A3cxBL._SL1500_.jpg", cantidad: 4, categories: ["Transistores"]}
-	];
+	instruments:InstrumentModel[] = [];
 
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog, 
+              private instrumentService: InstrumentsService) { }
 
   ngOnInit() {
+    
+    this.subsIns = this.instrumentService.instrumentsUpdated
+      .subscribe((instruments: InstrumentModel[]) => {
+        this.instruments = instruments;
+      });
+      this.instrumentService.getInstruments();
   }
 
-  openDialog(): void{
+  openDialog(_id: string): void{
+    const index = this.instruments.findIndex(p => p._id === _id);
   	let dialogRef = this.dialog.open(ModalComponent, {
       width: '250px',
-      data: { name: this.instruments[2].name, cantidad: this.instruments[2].cantidad }
+      data: { name: this.instruments[index].name, cantidad: this.instruments[index].cantidad }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+      if(result) {
+        console.log('The dialog was closed');
+        this.instrumentService.updateCantidadInstrument(_id, result);
+      }
       //this.cantidadPrestada = result;
       console.log(typeof(result));
       console.log(result);
     });
+  }
+
+  ngOnDestroy() {
+    this.subsIns.unsubscribe();
   }
 
 }
