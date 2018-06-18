@@ -2,9 +2,8 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser"); 
 
-app.use((req, res, next) => {
-	res.send("lola22");
-});
+const instrumentRouter = require("./routes/instruments");
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -21,5 +20,7 @@ app.use((req, res, next) => {
   );
   next();
 });
+
+app.use("/api/instruments", instrumentRouter);
 
 module.exports = app;
