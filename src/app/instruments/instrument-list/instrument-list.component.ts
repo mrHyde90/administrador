@@ -20,7 +20,7 @@ export class InstrumentListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     
-    this.subsIns = this.instrumentService.instrumentsUpdated
+    this.subsIns = this.instrumentService.getInstrumentUpdated()
       .subscribe((instruments: InstrumentModel[]) => {
         this.instruments = instruments;
       });
