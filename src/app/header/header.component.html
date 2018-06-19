@@ -1,10 +1,11 @@
 <mat-toolbar color="primary">
   <button mat-button [matMenuTriggerFor]="menu">Categorias</button>
 <mat-menu #menu="matMenu">
-  <button mat-menu-item>Transistores</button>
-  <button mat-menu-item>Capacitores</button>
-  <button mat-menu-item>Herramientas</button>
-  <button mat-menu-item>Diodos</button>
+  <button mat-menu-item routerLink="/categories/Transistores" routerLinkActive="mat-accent">Transistores</button>
+  <button mat-menu-item routerLink="/categories/Capacitores" routerLinkActive="mat-accent">Capacitores</button>
+  <button mat-menu-item  routerLink="/categories/Herramientas" routerLinkActive="mat-accent">Herramientas</button>
+  <button mat-menu-item routerLink="/categories/Diodos" routerLinkActive="mat-accent">Diodos</button>
+  <button mat-menu-item routerLink="/" routerLinkActive="mat-accent">Todos</button>
 </mat-menu>
 <span class="spacer"></span>
       <a mat-button >Sign in</a>

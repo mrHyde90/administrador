@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { Subject } from "rxjs";
 import { map } from "rxjs/operators";
 import { Router } from "@angular/router";
@@ -19,6 +19,16 @@ export class InstrumentsService {
 
 	getInstruments() {
 		this.http.get<InstrumentModel[]>(`http://localhost:3000${this.contactUrl}`)
+		.subscribe(instrumentsData => {
+			this.instruments = instrumentsData;
+			this.instrumentsUpdated.next([...this.instruments]);
+		});
+	}
+
+	getInstrumentsCategories(categoria: string) {
+		const options = categoria ? 
+			{params: new HttpParams().set("categoria", categoria)} : {};
+		this.http.get<InstrumentModel[]>(`http://localhost:3000${this.contactUrl}/categories`, options)
 		.subscribe(instrumentsData => {
 			this.instruments = instrumentsData;
 			this.instrumentsUpdated.next([...this.instruments]);

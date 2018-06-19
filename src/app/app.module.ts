@@ -5,7 +5,7 @@ import { FormsModule } from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
 import { AppComponent } from './app.component';
 
-
+import { AppRoutingModule } from "./app-routing.module";
 import {
   MatInputModule,
   MatCardModule,
@@ -46,7 +46,8 @@ import {ModalComponent} from './modal/modal.component';
     MatGridListModule,
     MatDialogModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -4,6 +4,7 @@ import {ModalComponent} from '../../modal/modal.component';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import { Subscription } from 'rxjs';
 import {InstrumentsService} from '../instruments.service';
+import { ActivatedRoute, ParamMap } from "@angular/router";
 
 @Component({
   selector: 'app-instrument-list',
@@ -12,19 +13,32 @@ import {InstrumentsService} from '../instruments.service';
 })
 export class InstrumentListComponent implements OnInit, OnDestroy {
   private subsIns: Subscription;
+  private type: string;
+  isLoading = false;
 	
 	instruments:InstrumentModel[] = [];
 
   constructor(public dialog: MatDialog, 
-              private instrumentService: InstrumentsService) { }
+              private instrumentService: InstrumentsService,
+              private route: ActivatedRoute) { }
 
   ngOnInit() {
-    
+    console.log("Inicio");
     this.subsIns = this.instrumentService.getInstrumentUpdated()
       .subscribe((instruments: InstrumentModel[]) => {
+        this.isLoading = false;
         this.instruments = instruments;
       });
-      this.instrumentService.getInstruments();
+
+    this.route.paramMap.subscribe((paramMap: ParamMap) => {
+      this.isLoading = true;
+      if(paramMap.has("type")){
+        this.type = paramMap.get("type");
+        this.instrumentService.getInstrumentsCategories(this.type);
+      } else {
+        this.instrumentService.getInstruments();
+      }
+    });
   }
 
   openDialog(_id: string): void{
@@ -37,6 +51,7 @@ export class InstrumentListComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
         console.log('The dialog was closed');
+        this.isLoading = true;
         this.instrumentService.updateCantidadInstrument(_id, result);
       }
       //this.cantidadPrestada = result;

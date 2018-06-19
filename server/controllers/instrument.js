@@ -39,3 +39,25 @@ exports.instrument_update = (req, res, next) => {
 	.catch(err => res.status(500).json({error: err}))
 };
 
+exports.instrument_categories = (req, res, next) => {
+	const categoria = req.query.categoria;
+	console.log(categoria);
+	console.log(typeof(categoria));
+	Instrument.find({categories : categoria})
+	.exec()
+	.then(findInstruments => {
+		const newInstruments = findInstruments.map(foundInstrument => {
+			return {
+				_id: foundInstrument._id,
+				name: foundInstrument.name,
+				instrumentImage: foundInstrument.instrumentImage,
+				categories: foundInstrument.categories,
+				cantidad: foundInstrument.cantidad,
+				created_at: foundInstrument.created_at
+			}
+		});
+		res.status(200).json(newInstruments);
+	})
+	.catch(err => res.status(500).json({error: err}))
+}
+
