@@ -1,9 +1,13 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser"); 
-
+const mongoose = require("mongoose");
 const instrumentRouter = require("./routes/instruments");
-
+const seedDB = require("./seed");
+//base de datos
+const url = "mongodb://localhost/administrador";
+mongoose.connect( process.env.MONGODB_URI || url);
+mongoose.Promise = global.Promise;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -20,6 +24,8 @@ app.use((req, res, next) => {
   );
   next();
 });
+
+seedDB();
 
 app.use("/api/instruments", instrumentRouter);
 
