@@ -8,30 +8,36 @@ import {InstrumentModel} from './instrument.model';
 @Injectable({providedIn: "root"})
 export class InstrumentsService {
 	private instruments: InstrumentModel[] = [];
-	private instrumentsUpdated = new Subject<InstrumentModel[]>();
+	private instrumentsUpdated = new Subject<{instruments: InstrumentModel[], instrumentCount: number}>();
 	private contactUrl = "/api/instruments";
-
+	private maxInstruments = 0;
 	constructor(private http: HttpClient){}
 
 	getInstrumentUpdated() {
 		return this.instrumentsUpdated.asObservable();
 	}
 
-	getInstruments() {
-		this.http.get<InstrumentModel[]>(`http://localhost:3000${this.contactUrl}`)
+	getInstruments(instrumentsPerPage: number, currentPage: number) {
+		const queryParams = `?pageSize=${instrumentsPerPage}&page=${currentPage}`;
+		this.http.get<{maxInstruments: number, instruments: InstrumentModel[]}>(`http://localhost:3000${this.contactUrl}` + queryParams)
 		.subscribe(instrumentsData => {
-			this.instruments = instrumentsData;
-			this.instrumentsUpdated.next([...this.instruments]);
+			this.instruments = instrumentsData.instruments;
+			this.maxInstruments = instrumentsData.maxInstruments;
+			this.instrumentsUpdated.next(
+				{instruments: [...this.instruments], 
+				instrumentCount: this.maxInstruments});
 		});
 	}
 
-	getInstrumentsCategories(categoria: string) {
-		const options = categoria ? 
-			{params: new HttpParams().set("categoria", categoria)} : {};
-		this.http.get<InstrumentModel[]>(`http://localhost:3000${this.contactUrl}/categories`, options)
+	getInstrumentsCategories(instrumentsPerPage: number, currentPage: number, categoria: string) {
+		const queryParams = `?pageSize=${instrumentsPerPage}&page=${currentPage}&categoria=${categoria}`;
+		this.http.get<{maxInstruments: number, instruments: InstrumentModel[]}>(`http://localhost:3000${this.contactUrl}/categories` + queryParams)
 		.subscribe(instrumentsData => {
-			this.instruments = instrumentsData;
-			this.instrumentsUpdated.next([...this.instruments]);
+			this.instruments = instrumentsData.instruments;
+			this.maxInstruments = instrumentsData.maxInstruments;
+			this.instrumentsUpdated.next(
+				{instruments: [...this.instruments],
+				instrumentCount: this.maxInstruments});
 		});
 	}
 
@@ -46,7 +52,7 @@ export class InstrumentsService {
 					const nuevaCantidad = updateInstrument[index].cantidad - cantidad;
 					updateInstrument[index].cantidad = nuevaCantidad;
 					this.instruments = updateInstrument;
-					this.instrumentsUpdated.next([...this.instruments]);
+					this.instrumentsUpdated.next({instruments: [...this.instruments], instrumentCount: this.maxInstruments});
 				} else {
 					console.log(nuevaR.message);
 				}

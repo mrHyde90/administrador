@@ -1,7 +1,7 @@
-import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import {InstrumentModel} from '../instrument.model';
 import {ModalComponent} from '../../modal/modal.component';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA, PageEvent, MatPaginator} from '@angular/material';
 import { Subscription } from 'rxjs';
 import {InstrumentsService} from '../instruments.service';
 import { ActivatedRoute, ParamMap } from "@angular/router";
@@ -14,9 +14,14 @@ import { ActivatedRoute, ParamMap } from "@angular/router";
 export class InstrumentListComponent implements OnInit, OnDestroy {
   private subsIns: Subscription;
   private type: string;
+  totalInstruments = 0;
+  instrumentsPerPage = 2;
+  pageSizeOptions = [1, 2, 5, 10];
   isLoading = false;
-	
+  currentPage = 1;
 	instruments:InstrumentModel[] = [];
+  @ViewChild("lola") mdPaginator: MatPaginator;
+
 
   constructor(public dialog: MatDialog, 
               private instrumentService: InstrumentsService,
@@ -25,18 +30,21 @@ export class InstrumentListComponent implements OnInit, OnDestroy {
   ngOnInit() {
     console.log("Inicio");
     this.subsIns = this.instrumentService.getInstrumentUpdated()
-      .subscribe((instruments: InstrumentModel[]) => {
+      .subscribe((instrumentData: {instruments: InstrumentModel[], instrumentCount: number}) => {
         this.isLoading = false;
-        this.instruments = instruments;
+        this.totalInstruments = instrumentData.instrumentCount;
+        this.instruments = instrumentData.instruments;
       });
 
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
+      this.mdPaginator.firstPage();
       this.isLoading = true;
       if(paramMap.has("type")){
         this.type = paramMap.get("type");
-        this.instrumentService.getInstrumentsCategories(this.type);
+        this.instrumentService.getInstrumentsCategories(this.instrumentsPerPage, this.currentPage, this.type);
       } else {
-        this.instrumentService.getInstruments();
+        this.type = null;
+        this.instrumentService.getInstruments(this.instrumentsPerPage, this.currentPage);
       }
     });
   }
@@ -50,7 +58,6 @@ export class InstrumentListComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
-        console.log('The dialog was closed');
         this.isLoading = true;
         this.instrumentService.updateCantidadInstrument(_id, result);
       }
@@ -58,6 +65,17 @@ export class InstrumentListComponent implements OnInit, OnDestroy {
       console.log(typeof(result));
       console.log(result);
     });
+  }
+
+  onChangedPage(pageData: PageEvent){
+    this.isLoading = true;
+    this.currentPage = pageData.pageIndex + 1;
+    this.instrumentsPerPage = pageData.pageSize;
+    if(this.type){
+      this.instrumentService.getInstrumentsCategories(this.instrumentsPerPage, this.currentPage, this.type);
+    } else {
+      this.instrumentService.getInstruments(this.instrumentsPerPage, this.currentPage);
+    }
   }
 
   ngOnDestroy() {

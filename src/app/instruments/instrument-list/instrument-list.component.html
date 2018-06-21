@@ -17,3 +17,5 @@
 	</mat-card>
   </mat-grid-tile>
 </mat-grid-list>
+<p *ngIf="instruments.length < 0">No hay elementos para mostrar</p>
+<mat-paginator  #lola [length]="totalInstruments" [pageSize]="instrumentsPerPage" [pageSizeOptions] = "pageSizeOptions" [showFirstLastButtons]="true" (page)="onChangedPage($event)"></mat-paginator>

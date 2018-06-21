@@ -1,11 +1,26 @@
 const mongoose = require("mongoose");
 const Instrument = require("../models/instrument");
 
-exports.instruments_get_all = (req, res, next) => {
-	Instrument.find({})
-	.exec()
-	.then(findInstruments => {
-		const newInstruments = findInstruments.map(foundInstrument => {
+
+exports.instrument_categories = (req, res, next) => {
+	const pageSize = +req.query.pageSize;
+	const currentPage = +req.query.page;
+	const categoria = req.query.categoria;
+	let fetchedIntruments;
+	const instrumentQuery = Instrument.find({categories : categoria});
+
+	if(pageSize && currentPage ){
+		instrumentQuery
+			.skip(pageSize * (currentPage - 1))
+			.limit(pageSize);
+	}
+
+	instrumentQuery.then(documents => {
+		fetchedIntruments = documents;
+		return Instrument.count({categories : categoria});
+	})
+	.then(count => {
+		const newInstruments = fetchedIntruments.map(foundInstrument => {
 			return {
 				_id: foundInstrument._id,
 				name: foundInstrument.name,
@@ -15,7 +30,48 @@ exports.instruments_get_all = (req, res, next) => {
 				created_at: foundInstrument.created_at
 			}
 		});
-		res.status(200).json(newInstruments);
+		res.status(200).json({
+			instruments: newInstruments,
+			maxInstruments: count
+		});
+	})
+	.catch(err => res.status(500).json({error: err}))
+}
+
+exports.instruments_get_all = (req, res, next) => {
+	const pageSize = +req.query.pageSize;
+	const currentPage = +req.query.page;
+	const instrumentQuery = Instrument.find();
+	let fetchedIntruments;
+	console.log(pageSize);
+	console.log(currentPage);
+	if(pageSize && currentPage ){
+		console.log("Si entro aqui");
+
+		instrumentQuery
+			.skip(pageSize * (currentPage - 1))
+			.limit(pageSize);
+	}
+	instrumentQuery
+	.then(documents => {
+		fetchedIntruments = documents;
+		return Instrument.count();
+	})
+	.then(count => {
+		const newInstruments = fetchedIntruments.map(foundInstrument => {
+			return {
+				_id: foundInstrument._id,
+				name: foundInstrument.name,
+				instrumentImage: foundInstrument.instrumentImage,
+				categories: foundInstrument.categories,
+				cantidad: foundInstrument.cantidad,
+				created_at: foundInstrument.created_at
+			}
+		});
+		res.status(200).json({
+			instruments: newInstruments,
+			maxInstruments: count
+		});
 	})
 	.catch(err => res.status(500).json({error: err}))
 };
@@ -39,25 +95,4 @@ exports.instrument_update = (req, res, next) => {
 	.catch(err => res.status(500).json({error: err}))
 };
 
-exports.instrument_categories = (req, res, next) => {
-	const categoria = req.query.categoria;
-	console.log(categoria);
-	console.log(typeof(categoria));
-	Instrument.find({categories : categoria})
-	.exec()
-	.then(findInstruments => {
-		const newInstruments = findInstruments.map(foundInstrument => {
-			return {
-				_id: foundInstrument._id,
-				name: foundInstrument.name,
-				instrumentImage: foundInstrument.instrumentImage,
-				categories: foundInstrument.categories,
-				cantidad: foundInstrument.cantidad,
-				created_at: foundInstrument.created_at
-			}
-		});
-		res.status(200).json(newInstruments);
-	})
-	.catch(err => res.status(500).json({error: err}))
-}
 

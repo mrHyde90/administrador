@@ -17,7 +17,8 @@ import {
   MatMenuModule,
   MatDividerModule,
   MatGridListModule,
-  MatDialogModule
+  MatDialogModule,
+  MatPaginatorModule
 } from "@angular/material";
 import { HeaderComponent } from './header/header.component';
 import { InstrumentListComponent } from './instruments/instrument-list/instrument-list.component';
@@ -45,6 +46,7 @@ import {ModalComponent} from './modal/modal.component';
     MatDividerModule,
     MatGridListModule,
     MatDialogModule,
+    MatPaginatorModule,
     FormsModule,
     HttpClientModule,
     AppRoutingModule
