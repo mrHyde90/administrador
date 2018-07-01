@@ -3,6 +3,7 @@ const app = express();
 const bodyParser = require("body-parser"); 
 const mongoose = require("mongoose");
 const instrumentRouter = require("./routes/instruments");
+const userRouter = require("./routes/user");
 const seedDB = require("./seed");
 //base de datos
 const url = "mongodb://localhost/administrador";
@@ -16,7 +17,7 @@ app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
     "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
   );
   res.setHeader(
     "Access-Control-Allow-Methods",
@@ -28,5 +29,6 @@ app.use((req, res, next) => {
 seedDB();
 
 app.use("/api/instruments", instrumentRouter);
+app.use("/api/user", userRouter);
 
 module.exports = app;

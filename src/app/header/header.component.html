@@ -8,13 +8,18 @@
   <button mat-menu-item routerLink="/" routerLinkActive="mat-accent">Todos</button>
 </mat-menu>
 <span class="spacer"></span>
-      <a mat-button >Sign in</a>
-      <a mat-button >Sign up</a>
+  <div *ngIf="!userIsAuthenticated">
+    <button mat-button  routerLink="/signin" routerLinkActive="mat-accent">Sign In</button>
+    <button mat-button  routerLink="/signup" routerLinkActive="mat-accent">Sign Up</button>
+  </div>
+      
+<div *ngIf="userIsAuthenticated">
+  <button mat-button [matMenuTriggerFor]="profile">Profile</button>
+  <mat-menu #profile="matMenu">
+    <button mat-menu-item>Usuario</button>
+    <mat-divider></mat-divider>
+    <button mat-menu-item (click)="onLogout()">Log Out</button>
+  </mat-menu>  
+</div>
 
-<button mat-button [matMenuTriggerFor]="profile">Profile</button>
-<mat-menu #profile="matMenu">
-  <button mat-menu-item>Usuario</button>
-  <mat-divider></mat-divider>
-  <button mat-menu-item>Log Out</button>
-</mat-menu>
 </mat-toolbar>
