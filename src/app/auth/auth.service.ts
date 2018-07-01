@@ -30,7 +30,7 @@ export class AuthService {
   }
 
   createUser(email: string, password: string, matricula: string, carrera: string, name: string){
-  	const usuario: UserModel = {
+  	const usuario: any = {
   		email: email, 
   		password: password, 
   		matricula: matricula, 
