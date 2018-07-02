@@ -77,7 +77,15 @@ exports.user_signin = (req, res, next) => {
 			);
 			res.status(200).json({
 				token: token,
-				expiresIn: 3600
+				expiresIn: 3600,
+				userData: {
+					_id: fetchedUser._id,
+					email: fetchedUser.email,
+					matricula: fetchedUser.matricula,
+					carrera: fetchedUser.carrera,
+					name: fetchedUser.name,
+					user_type: fetchedUser.user_type
+				}
 			});
 		})
 		.catch(err => {

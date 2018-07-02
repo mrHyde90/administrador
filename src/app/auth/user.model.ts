@@ -1,5 +1,3 @@
-import {AuthModel} from './auth.model';
-
 export class UserModel {
 	_id?: string;
 	email: string;

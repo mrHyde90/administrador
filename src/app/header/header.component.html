@@ -14,9 +14,10 @@
   </div>
       
 <div *ngIf="userIsAuthenticated">
-  <button mat-button [matMenuTriggerFor]="profile">Profile</button>
+  <button mat-button [matMenuTriggerFor]="profile">{{userData.matricula}}</button>
   <mat-menu #profile="matMenu">
-    <button mat-menu-item>Usuario</button>
+    <button mat-menu-item *ngIf="userIsAdmin">Owner</button>
+    <button mat-menu-item *ngIf="!userIsAdmin">profile</button>
     <mat-divider></mat-divider>
     <button mat-menu-item (click)="onLogout()">Log Out</button>
   </mat-menu>  

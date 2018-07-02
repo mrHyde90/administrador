@@ -5,6 +5,7 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA, PageEvent, MatPaginator} from 
 import { Subscription } from 'rxjs';
 import {InstrumentsService} from '../instruments.service';
 import { ActivatedRoute, ParamMap } from "@angular/router";
+import {AuthService} from '../../auth/auth.service';
 
 @Component({
   selector: 'app-instrument-list',
@@ -13,19 +14,22 @@ import { ActivatedRoute, ParamMap } from "@angular/router";
 })
 export class InstrumentListComponent implements OnInit, OnDestroy {
   private subsIns: Subscription;
+  private authSubs: Subscription;
   private type: string;
   totalInstruments = 0;
   instrumentsPerPage = 2;
   pageSizeOptions = [1, 2, 5, 10];
   isLoading = false;
   currentPage = 1;
+  isAuthenticated = false;
 	instruments:InstrumentModel[] = [];
   @ViewChild("lola") mdPaginator: MatPaginator;
 
 
   constructor(public dialog: MatDialog, 
               private instrumentService: InstrumentsService,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute,
+              private authService: AuthService) { }
 
   ngOnInit() {
     console.log("Inicio");
@@ -47,9 +51,15 @@ export class InstrumentListComponent implements OnInit, OnDestroy {
         this.instrumentService.getInstruments(this.instrumentsPerPage, this.currentPage);
       }
     });
+    this.isAuthenticated = this.authService.getAuth();
+    this.authSubs = this.authService.getAuthStatusListener()
+      .subscribe(isAuthenticated => this.isAuthenticated = isAuthenticated);
   }
 
   openDialog(_id: string): void{
+    if(!this.isAuthenticated){
+      return;
+    }
     const index = this.instruments.findIndex(p => p._id === _id);
   	let dialogRef = this.dialog.open(ModalComponent, {
       width: '250px',
@@ -80,6 +90,7 @@ export class InstrumentListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subsIns.unsubscribe();
+    this.authSubs.unsubscribe();
   }
 
 }
