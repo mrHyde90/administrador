@@ -19,7 +19,8 @@ import {
   MatDividerModule,
   MatGridListModule,
   MatDialogModule,
-  MatPaginatorModule
+  MatPaginatorModule,
+  MatTabsModule
 } from "@angular/material";
 import { HeaderComponent } from './header/header.component';
 import { InstrumentListComponent } from './instruments/instrument-list/instrument-list.component';
@@ -27,6 +28,9 @@ import {ModalComponent} from './modal/modal.component';
 import { SigninComponent } from './auth/signin/signin.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { AuthInterceptor } from "./auth/auth-interceptor";
+import { ProfileComponent } from './profile/profile.component';
+import { RequestListComponent } from './request/request-list/request-list.component';
+import { ReversePipe } from './request/reverse.pipe';
 
 @NgModule({
   declarations: [
@@ -35,7 +39,10 @@ import { AuthInterceptor } from "./auth/auth-interceptor";
     InstrumentListComponent,
     ModalComponent,
     SigninComponent,
-    SignupComponent
+    SignupComponent,
+    ProfileComponent,
+    RequestListComponent,
+    ReversePipe
   ],
   entryComponents: [InstrumentListComponent, ModalComponent],
   imports: [
@@ -53,6 +60,7 @@ import { AuthInterceptor } from "./auth/auth-interceptor";
     MatGridListModule,
     MatDialogModule,
     MatPaginatorModule,
+    MatTabsModule,
     FormsModule,
     HttpClientModule,
     AppRoutingModule,

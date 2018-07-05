@@ -70,7 +70,8 @@ exports.user_signin = (req, res, next) => {
 			const token = jwt.sign(
 				{
 					email: fetchedUser.email,
-					userId: fetchedUser._id
+					userId: fetchedUser._id,
+					user_type: fetchedUser.user_type
 				},
 				"secret_this_should_be_longer",
         		{ expiresIn: "1h" }

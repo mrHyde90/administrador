@@ -4,7 +4,9 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const instrumentRouter = require("./routes/instruments");
 const userRouter = require("./routes/user");
-const seedDB = require("./seed");
+const requestRouter = require("./routes/request");
+//const seedRequest = require("./seedRequest");
+//const seedDB = require("./seed");
 //base de datos
 const url = "mongodb://localhost/administrador";
 mongoose.connect( process.env.MONGODB_URI || url);
@@ -26,9 +28,11 @@ app.use((req, res, next) => {
   next();
 });
 
-seedDB();
+//seedRequest();
+//seedDB();
 
 app.use("/api/instruments", instrumentRouter);
 app.use("/api/user", userRouter);
+app.use("/api/request", requestRouter);
 
 module.exports = app;

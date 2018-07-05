@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import {InstrumentsService} from '../instruments.service';
 import { ActivatedRoute, ParamMap } from "@angular/router";
 import {AuthService} from '../../auth/auth.service';
+import {RequestService} from '../../request/request.service';
 
 @Component({
   selector: 'app-instrument-list',
@@ -29,7 +30,8 @@ export class InstrumentListComponent implements OnInit, OnDestroy {
   constructor(public dialog: MatDialog, 
               private instrumentService: InstrumentsService,
               private route: ActivatedRoute,
-              private authService: AuthService) { }
+              private authService: AuthService,
+              private requestService: RequestService) { }
 
   ngOnInit() {
     console.log("Inicio");
@@ -66,14 +68,15 @@ export class InstrumentListComponent implements OnInit, OnDestroy {
       data: { name: this.instruments[index].name, cantidad: this.instruments[index].cantidad }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if(result) {
+    dialogRef.afterClosed().subscribe(cantidad => {
+      if(cantidad) {
         this.isLoading = true;
-        this.instrumentService.updateCantidadInstrument(_id, result);
+        this.requestService.createRequest(this.instruments[index].name, cantidad, this.instruments[index]._id)
+          .subscribe(resultado => {
+            console.log(resultado);
+            this.isLoading = false;
+          });
       }
-      //this.cantidadPrestada = result;
-      console.log(typeof(result));
-      console.log(result);
     });
   }
 

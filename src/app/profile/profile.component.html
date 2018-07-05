@@ -1,0 +1,50 @@
+<main>
+	<mat-card>
+	<mat-card-header>
+		<mat-card-title>Nombre: {{userData.name}}</mat-card-title>
+	</mat-card-header>
+	<mat-card-content>
+		<p>Email: {{userData.email}}</p>
+		<p>Carrea: {{userData.carrera}}</p>
+		<p>Matricula: {{userData.matricula}}</p>
+	</mat-card-content>
+</mat-card>
+	<nav mat-tab-nav-bar>
+		<a mat-tab-link
+     		*ngFor="let link of navLinks"
+     		[routerLink]="link.path"
+     		routerLinkActive #rla="routerLinkActive"
+     		[active]="rla.isActive">
+    		{{link.label}}
+  		</a>
+	</nav>
+	<router-outlet></router-outlet>
+</main>
+
+<!--
+
+	<mat-grid-list cols="6" >
+		<mat-grid-tile [colspan]="2"  [rowspan]="1.5">
+			<mat-card>
+				<mat-card-header>
+					<mat-card-title>{{userData.name}}</mat-card-title>
+				</mat-card-header>
+				<mat-card-content>
+					<p>{{userData.email}}</p>
+					<p>{{userData.carrera}}</p>
+					<p>{{userData.matricula}}</p>
+				</mat-card-content>
+			</mat-card>
+		</mat-grid-tile>
+		<mat-grid-tile [colspan]="4" [rowspan]="0.5">
+			<nav mat-tab-nav-bar>
+			  <a mat-tab-link>
+			    Prestamos
+			  </a>
+			  <a mat-tab-link>
+			    Pendientes
+			  </a>
+			</nav>
+		</mat-grid-tile>
+	</mat-grid-list>
+ -->

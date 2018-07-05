@@ -17,7 +17,7 @@
   <button mat-button [matMenuTriggerFor]="profile">{{userData.matricula}}</button>
   <mat-menu #profile="matMenu">
     <button mat-menu-item *ngIf="userIsAdmin">Owner</button>
-    <button mat-menu-item *ngIf="!userIsAdmin">profile</button>
+    <button mat-menu-item *ngIf="!userIsAdmin" routerLink="/profile/pending" routerLinkActive="mat-accent" >Profile</button>
     <mat-divider></mat-divider>
     <button mat-menu-item (click)="onLogout()">Log Out</button>
   </mat-menu>  
