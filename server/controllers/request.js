@@ -1,5 +1,5 @@
 const Request = require("../models/request");
-
+//Se duplica el codigo, eliminar request_get_all, pero hazlo en la limpieza
 exports.requests_get_all = (req, res, next) => {
 	const request_type = req.query.request_type;
 	const userId = req.userData.userId;
@@ -57,6 +57,51 @@ exports.request_delete = (req, res, next) => {
 			} else {
 				res.status(401).json({ message: "Not authorized!" });
 			}
+		})
+		.catch(err => res.status(500).json({error: err}))
+}
+
+exports.search_user_requests = (req, res, next) => {
+	const request_type = req.query.request_type;
+	const userId = req.params.userId;
+	Request.find({user_id: userId, request_type: request_type})
+		.then(requests => {
+			const cleanRequests = requests.map(generateRequest => {
+				return {
+					_id: generateRequest._id,
+					instrumentName: generateRequest.instrumentName,
+					cantidad: generateRequest.cantidad,
+					user_id: generateRequest.user_id,
+					created_at: generateRequest.created_at,
+					request_type: generateRequest.request_type,
+					instrument_id: generateRequest.instrument_id
+				};
+			});
+			res.status(200).json({
+				sendRequests: cleanRequests
+			});
+		})
+		.catch(err => res.status(500).json({error: err}))
+}
+
+exports.search_all_requests = (req, res, next) => {
+	const request_type = req.query.request_type;
+	Request.find({request_type: request_type})
+		.then(requests => {
+			const cleanRequests = requests.map(generateRequest => {
+				return {
+					_id: generateRequest._id,
+					instrumentName: generateRequest.instrumentName,
+					cantidad: generateRequest.cantidad,
+					user_id: generateRequest.user_id,
+					created_at: generateRequest.created_at,
+					request_type: generateRequest.request_type,
+					instrument_id: generateRequest.instrument_id
+				};
+			});
+			res.status(200).json({
+				sendRequests: cleanRequests
+			});
 		})
 		.catch(err => res.status(500).json({error: err}))
 }

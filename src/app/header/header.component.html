@@ -10,13 +10,12 @@
 <span class="spacer"></span>
   <div *ngIf="!userIsAuthenticated">
     <button mat-button  routerLink="/signin" routerLinkActive="mat-accent">Sign In</button>
-    <button mat-button  routerLink="/signup" routerLinkActive="mat-accent">Sign Up</button>
   </div>
       
 <div *ngIf="userIsAuthenticated">
   <button mat-button [matMenuTriggerFor]="profile">{{userData.matricula}}</button>
   <mat-menu #profile="matMenu">
-    <button mat-menu-item *ngIf="userIsAdmin">Owner</button>
+    <button mat-menu-item *ngIf="userIsAdmin" routerLink="/owner">Owner</button>
     <button mat-menu-item *ngIf="!userIsAdmin" routerLink="/profile/pending" routerLinkActive="mat-accent" >Profile</button>
     <mat-divider></mat-divider>
     <button mat-menu-item (click)="onLogout()">Log Out</button>

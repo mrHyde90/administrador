@@ -4,5 +4,5 @@ export class UserModel {
 	matricula: string;
 	carrera: string;
 	name: string;
-	user_type: string;
+	user_type?: string;
 }

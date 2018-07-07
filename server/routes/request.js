@@ -14,4 +14,12 @@ router.put("/:id", CheckAuth.checkAdmin, RequestController.request_update);
 
 //DELETE
 router.delete("/:id", CheckAuth.checkDelete, RequestController.request_delete);
+
+//GET REQUESTS BY USER
+router.get("/search-user-requests/:userId", CheckAuth.checkAdmin, RequestController.search_user_requests);
+
+//Get All Requests
+router.get("/search-all-requests", CheckAuth.checkAdmin, RequestController.search_all_requests);
+
+//Delete 
 module.exports = router;

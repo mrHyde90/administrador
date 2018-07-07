@@ -1,28 +1,30 @@
 <mat-card>
   <mat-spinner *ngIf="isLoading"></mat-spinner>
-  <form (submit)="onSignup(signupForm)" #signupForm="ngForm" *ngIf="!isLoading">
+  <form [formGroup]="form" (submit)="onSavePost()" *ngIf="!isLoading">
     <mat-form-field>
-      <input matInput name="email" ngModel type="email" placeholder="E-Mail" #emailInput="ngModel" required email>
-      <mat-error *ngIf="emailInput.invalid">Please enter a valid email.</mat-error>
+      <!-- matInput type="text" formControlName="title" placeholder="Post Title"-->
+      <input matInput formControlName="email" type="email" placeholder="E-Mail" email>
+      <mat-error *ngIf="form.get('email').invalid">Please enter a valid email.</mat-error>
     </mat-form-field>
-    <mat-form-field>
-      <input type="password" name="password" ngModel matInput placeholder="Password" #passwordInput="ngModel" required>
-      <mat-error *ngIf="passwordInput.invalid">Please enter a valid password.</mat-error>
+
+    <mat-form-field *ngIf="isCreate()">
+      <input type="password" formControlName="password" matInput placeholder="Password" >
+      <mat-error *ngIf="form.get('password').invalid">Please enter a valid password.</mat-error>
     </mat-form-field>
 
     <mat-form-field>
-      <input type="text" name="matricula" ngModel matInput placeholder="Matricula" #matriculaInput="ngModel" required>
-      <mat-error *ngIf="matriculaInput.invalid">Ingresa tu matricula.</mat-error>
+      <input type="text" formControlName="matricula" matInput placeholder="Matricula" >
+      <mat-error *ngIf="form.get('matricula').invalid">Ingresa tu matricula.</mat-error>
     </mat-form-field>
 
     <mat-form-field>
-      <input type="text" name="carrera" ngModel matInput placeholder="Carrera" #carreraInput="ngModel" required>
-      <mat-error *ngIf="carreraInput.invalid">Ingresa tu carrera.</mat-error>
+      <input type="text" formControlName="carrera" matInput placeholder="Carrera" >
+      <mat-error *ngIf="form.get('carrera').invalid">Ingresa tu carrera.</mat-error>
     </mat-form-field>
 
     <mat-form-field>
-      <input type="text" name="name" ngModel matInput placeholder="Nombre" #nameInput="ngModel" required>
-      <mat-error *ngIf="nameInput.invalid">Ingresa tu nombre.</mat-error>
+      <input type="text" formControlName="name" matInput placeholder="Nombre" >
+      <mat-error *ngIf="form.get('name').invalid">Ingresa tu nombre.</mat-error>
     </mat-form-field>
     <button mat-raised-button color="accent" type="submit" *ngIf="!isLoading">Signup</button>
   </form>

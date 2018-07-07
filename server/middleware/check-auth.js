@@ -24,17 +24,19 @@ exports.checkAdmin = (req, res, next) => {
         const decoded = jwt.verify(token, "secret_this_should_be_longer");
         console.log(decoded);
         req.userData = decoded;
-        if(decoded.user_type === "Admin"){
-            next();
-        }
-        return res.status(401).json({
-                    message: "No eres Admin"
-                });
+
     } catch (error) {
         return res.status(401).json({
             message: "Auth Failed"
         });
     }
+    if(req.userData.user_type === "Admin"){
+            next();
+        } else{
+            return res.status(401).json({
+                    message: "No eres Admin"
+                });
+        }
 };
 
 exports.checkDelete = (req, res, next) => {

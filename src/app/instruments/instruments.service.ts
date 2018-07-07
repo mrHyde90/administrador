@@ -42,20 +42,7 @@ export class InstrumentsService {
 	}
 
 	updateCantidadInstrument(_id: string, cantidad: number){
-		this.http.put(`http://localhost:3000${this.contactUrl}/${_id}`, {cantidad: cantidad})
-			.subscribe(response => {
-				const nuevaR: any = response;
-				if(nuevaR.exito){
-					console.log(nuevaR.message);
-					const updateInstrument = [...this.instruments];
-					const index = updateInstrument.findIndex(p => p._id === _id);
-					const nuevaCantidad = updateInstrument[index].cantidad - cantidad;
-					updateInstrument[index].cantidad = nuevaCantidad;
-					this.instruments = updateInstrument;
-					this.instrumentsUpdated.next({instruments: [...this.instruments], instrumentCount: this.maxInstruments});
-				} else {
-					console.log(nuevaR.message);
-				}
-			});
+		return this.http
+			.put<{message: string, exito: boolean}>(`http://localhost:3000${this.contactUrl}/${_id}`, {cantidad: cantidad});
 	}
 }

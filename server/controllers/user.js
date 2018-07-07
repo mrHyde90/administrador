@@ -95,3 +95,71 @@ exports.user_signin = (req, res, next) => {
 			})
 		})
 }
+
+exports.search_users = (req, res, next) => {
+	const matricula = req.query.matricula;
+	User.findOne({matricula: matricula})
+		.then(userFound => {
+			res.status(200).json({
+				user: {
+					_id: userFound._id,
+					carrera: userFound.carrera,
+					matricula: userFound.matricula,
+					email: userFound.email,
+					name: userFound.name,
+					user_type: userFound.user_type
+				}
+			});
+		}) 
+		.catch(err => res.status(500).json({error: err}))
+}
+
+exports.search_user_id = (req, res, next) => {
+	const userId = req.params.id;
+	User.findById(userId)
+		.then(userFound => {
+			res.status(200).json({
+				user: {
+					_id: userFound._id,
+					carrera: userFound.carrera,
+					matricula: userFound.matricula,
+					email: userFound.email,
+					name: userFound.name,
+					user_type: userFound.user_type
+				}
+			});
+		}) 
+		.catch(err => res.status(500).json({error: err}))
+}
+
+exports.edit_user = (req, res, next) => {
+	const userId = req.params.id;
+	console.log(req.body);
+	console.log(userId);
+	const user = new User({
+		_id: req.body._id,
+		email: req.body.email,
+		matricula: req.body.matricula,
+		carrera: req.body.carrera,
+		name: req.body.name, 
+	});
+	User.updateOne({_id: userId}, user)
+		 .then(result => {
+		 	console.log("Dentro del updateOne");
+	      if (result.nModified > 0) {
+	        res.status(200).json({ message: "Update successful!" });
+	      } else {
+	        res.status(401).json({ message: "Not authorized!" });
+	      }
+	    })
+		 .catch(err => res.status(500).json({error: err}))
+}
+
+exports.delete_user = (req, res, next) => {
+	const userId = req.params.id;
+	User.remove({_id: userId})
+		.then(results => res.status(200).json({
+			message: "User deleted"
+		}))
+		.catch(err => res.status(500).json({error: err}))
+}

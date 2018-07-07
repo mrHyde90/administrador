@@ -49,10 +49,7 @@ export class AuthService {
   		carrera: carrera, 
   		name: name
   	};
-  	this.http.post(`http://localhost:3000${this.base_url}/signup`, usuario)
-  		.subscribe(result => {
-  			console.log(result);
-  		});
+  	return this.http.post(`http://localhost:3000${this.base_url}/signup`, usuario);
   }
 
   login(email: string, password: string){

@@ -20,7 +20,11 @@ import {
   MatGridListModule,
   MatDialogModule,
   MatPaginatorModule,
-  MatTabsModule
+  MatTabsModule,
+  MatSidenavModule,
+  MatListModule, 
+  MatIconModule,
+  MatButtonToggleModule
 } from "@angular/material";
 import { HeaderComponent } from './header/header.component';
 import { InstrumentListComponent } from './instruments/instrument-list/instrument-list.component';
@@ -31,6 +35,10 @@ import { AuthInterceptor } from "./auth/auth-interceptor";
 import { ProfileComponent } from './profile/profile.component';
 import { RequestListComponent } from './request/request-list/request-list.component';
 import { ReversePipe } from './request/reverse.pipe';
+import { OwnerComponent } from './owner/owner.component';
+import { LayoutModule } from '@angular/cdk/layout';
+import { UserSearchComponent } from './user-search/user-search.component';
+import { UserRequestComponent } from './user-request/user-request.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +50,10 @@ import { ReversePipe } from './request/reverse.pipe';
     SignupComponent,
     ProfileComponent,
     RequestListComponent,
-    ReversePipe
+    ReversePipe,
+    OwnerComponent,
+    UserSearchComponent,
+    UserRequestComponent
   ],
   entryComponents: [InstrumentListComponent, ModalComponent],
   imports: [
@@ -64,7 +75,12 @@ import { ReversePipe } from './request/reverse.pipe';
     FormsModule,
     HttpClientModule,
     AppRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatSidenavModule,
+    MatListModule,
+    LayoutModule,
+    MatIconModule,
+    MatButtonToggleModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
