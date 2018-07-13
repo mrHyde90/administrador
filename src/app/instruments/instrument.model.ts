@@ -3,6 +3,6 @@ export class InstrumentModel {
 	name: string;
 	instrumentImage: string;
 	cantidad: number;
-	categories: string[];
+	categories: string;
 	created_at?: Date;
 }

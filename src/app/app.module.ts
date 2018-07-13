@@ -24,7 +24,8 @@ import {
   MatSidenavModule,
   MatListModule, 
   MatIconModule,
-  MatButtonToggleModule
+  MatButtonToggleModule,
+  MatAutocompleteModule
 } from "@angular/material";
 import { HeaderComponent } from './header/header.component';
 import { InstrumentListComponent } from './instruments/instrument-list/instrument-list.component';
@@ -39,6 +40,9 @@ import { OwnerComponent } from './owner/owner.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { UserSearchComponent } from './user-search/user-search.component';
 import { UserRequestComponent } from './user-request/user-request.component';
+import { InstrumentSearchComponent } from './instruments/instrument-search/instrument-search.component';
+import { InstrumentStartComponent } from './instruments/instrument-start/instrument-start.component';
+import { InstrumentCreateComponent } from './instruments/instrument-create/instrument-create.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +57,10 @@ import { UserRequestComponent } from './user-request/user-request.component';
     ReversePipe,
     OwnerComponent,
     UserSearchComponent,
-    UserRequestComponent
+    UserRequestComponent,
+    InstrumentSearchComponent,
+    InstrumentStartComponent,
+    InstrumentCreateComponent
   ],
   entryComponents: [InstrumentListComponent, ModalComponent],
   imports: [
@@ -80,7 +87,8 @@ import { UserRequestComponent } from './user-request/user-request.component';
     MatListModule,
     LayoutModule,
     MatIconModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatAutocompleteModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }

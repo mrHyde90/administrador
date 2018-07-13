@@ -12,7 +12,9 @@
 			<p>Categorias: {{instrument.categories}}</p>
   		</mat-card-content>
   		<mat-card-actions *ngIf="isAuthenticated">
-    		<button mat-raised-button (click)="openDialog(instrument._id)">Prestar</button>
+    		<button *ngIf="!isAdmin" mat-raised-button (click)="openDialog(instrument._id)">Prestar</button>
+        <button *ngIf="isAdmin" mat-raised-button [routerLink]="['/owner', 'instruments', 'edit', instrument._id]" routerLinkActive="mat-accent" >Editar</button>
+        <button *ngIf="isAdmin" mat-raised-button (click)="deleteInstrument(instrument._id)">Eliminar</button>
   		</mat-card-actions>
 	</mat-card>
   </mat-grid-tile>

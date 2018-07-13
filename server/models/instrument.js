@@ -4,7 +4,7 @@ var instrumentSchema = new mongoose.Schema({
 	name: {type: String, required: true},
 	instrumentImage: {type: String, required: true},
 	cantidad: {type: Number, required: true, default: 0},
-	categories: [{type: String, enum: ["Diodos", "Capacitores", "Transistores", "Herramientas"]}],
+	categories: {type: String, enum: ["Diodos", "Capacitores", "Transistores", "Herramientas"], default: "Herramientas"},
 	created_at: {type: Date, default: Date.now()}
 });
 

@@ -1,0 +1,99 @@
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, Validators, NgForm } from "@angular/forms";
+import { ActivatedRoute, ParamMap } from "@angular/router";
+import {Category} from '../instrument-search/category.model';
+import {InstrumentModel} from '../instrument.model';
+import {InstrumentsService} from '../instruments.service';
+
+@Component({
+  selector: 'app-instrument-create',
+  templateUrl: './instrument-create.component.html',
+  styleUrls: ['./instrument-create.component.css']
+})
+export class InstrumentCreateComponent implements OnInit {
+	isLoading = false;
+  form: FormGroup;
+  private mode = "create";
+  private instrument_id: string;
+  instrument: InstrumentModel;
+  categories: Category[] = [
+    {name: 'Capacitores', viewValue: 'Capacitor'},
+    {name: 'Herramientas', viewValue: 'Herramienta'},
+    {name: 'Diodos', viewValue: 'Diodo'},
+    {name: 'Transistores', viewValue: 'Transistor'}
+  ];
+//"Diodos", "Capacitores", "Transistores", "Herramientas"
+  constructor(private route: ActivatedRoute,
+              private instrumentService: InstrumentsService) { }
+
+  ngOnInit() {
+  	this.form = new FormGroup({
+      name: new FormControl(null, { validators: [Validators.required]}),
+      instrumentImage: new FormControl(null, { validators: [Validators.required] }),
+      cantidad: new FormControl(null, {validators: [Validators.required]}),
+      category: new FormControl(null, { validators: [Validators.required] })
+    });
+    this.route.paramMap.subscribe((paramMap: ParamMap) => {
+      if(paramMap.has("id")){
+        this.mode = "edit";
+        this.instrument_id = paramMap.get("id");
+        console.log("Conociendo el id");
+        console.log(this.instrument_id);
+        this.isLoading = true;
+        this.instrumentService.getInstrument(this.instrument_id)
+          .subscribe(instrumentData => {
+            console.log("Dentro del subscribe");
+            console.log(instrumentData);
+            this.isLoading = false;
+            this.instrument = {
+              name: instrumentData.instrument.name,
+              instrumentImage: instrumentData.instrument.instrumentImage,
+              cantidad: instrumentData.instrument.cantidad,
+              categories: instrumentData.instrument.categories
+            };
+            console.log("Vergas");
+            console.log(this.instrument);
+            this.form.setValue({
+              name: this.instrument.name,
+              instrumentImage: this.instrument.instrumentImage,
+              cantidad: this.instrument.cantidad,
+              category: this.instrument.categories
+            });
+          })
+      } else {
+        this.mode = "create";
+        this.instrument_id = null;
+      }
+    })
+  }
+
+  onSavePost(){
+  	console.log(this.form.value);
+    console.log(this.form.invalid);
+    if(this.form.invalid){
+      return;
+    }
+    const newInstrument:InstrumentModel = {
+        name: this.form.value.name,
+        instrumentImage: this.form.value.instrumentImage,
+        cantidad: this.form.value.cantidad,
+        categories: this.form.value.category
+      }
+    this.isLoading = true;
+    if(this.mode === "create"){
+      this.instrumentService.createInstrument(newInstrument)
+        .subscribe(response => {
+          console.log(response);
+          this.isLoading = false;
+        })
+    } else {
+      this.instrumentService.updateInstrument(this.instrument_id, newInstrument)
+        .subscribe(response => {
+          console.log(response);
+          this.isLoading = false;
+        })
+    }
+    this.form.reset();
+  }
+
+}

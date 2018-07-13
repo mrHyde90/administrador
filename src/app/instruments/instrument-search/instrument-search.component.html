@@ -1,0 +1,13 @@
+<main>
+	<form class="example-form" (submit)="onSavePost()">
+	  <mat-form-field class="example-full-width">
+	    <input type="text" placeholder="Search Instrument By Category" aria-label="Assignee" matInput [formControl]="myControl" [matAutocomplete]="auto">
+	    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+	      <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+	        {{option.name}}
+	      </mat-option>
+	    </mat-autocomplete>
+	  </mat-form-field>
+	  <button mat-raised-button color="accent" type="submit" >Search</button>
+	</form>	
+</main>

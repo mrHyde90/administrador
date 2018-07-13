@@ -76,6 +76,24 @@ exports.instruments_get_all = (req, res, next) => {
 	.catch(err => res.status(500).json({error: err}))
 };
 
+exports.instrument_show = (req, res, next) => {
+	const instrument_id = req.params.id;
+	Instrument.findById(instrument_id)
+	.then(foundInstrument => {
+		console.log("Dentro del instrument_show");
+		console.log(foundInstrument);
+		res.status(200).json({instrument: {
+					_id: foundInstrument._id,
+					name: foundInstrument.name,
+					instrumentImage: foundInstrument.instrumentImage,
+					cantidad: foundInstrument.cantidad,
+					categories: foundInstrument.categories,
+					created_at: foundInstrument.created_at
+				}});
+	})
+	.catch(err => res.status(500).json({error: err}))
+}
+
 exports.instrument_update = (req, res, next) => {
 	const restar = req.body.cantidad;
 	const id = req.params.id;
@@ -95,4 +113,40 @@ exports.instrument_update = (req, res, next) => {
 	.catch(err => res.status(500).json({error: err}))
 };
 
+exports.instrument_good_update = (req, res, next) => {
+	const id = req.params.id;
+	const newInstrument = {
+		name: req.body.name,
+		instrumentImage: req.body.instrumentImage,
+		cantidad: req.body.cantidad,
+		categories: req.body.categories
+	}	
+	Instrument.update({_id: id}, {$set: newInstrument})
+		.then(result => res.status(200).json({message: "Update succesful"}))
+		.catch(err => res.status(500).json({error: err}))
+}
 
+exports.instrument_create = (req, res, next) => {
+	const instrument = new Instrument({
+		name: req.body.name,
+		instrumentImage: req.body.instrumentImage,
+		cantidad: req.body.cantidad,
+		categories: req.body.categories
+	});
+	instrument.save()
+		.then(newInstrument => res.status(201).json({message: "Instrument created"}))
+		.catch(err => res.status(500).json({error: err}));
+}
+
+exports.instrument_delete = (req, res, next) => {
+	const Id = req.params.id;
+	Instrument.deleteOne({_id: Id})
+		.then(result => {
+			if(result.n > 0){
+				res.status(200).json({ message: "Deletion successful!" });
+			} else {
+				res.status(401).json({ message: "Not authorized!" });
+			}
+		})
+		.catch(err => res.status(500).json({error: err}));
+}

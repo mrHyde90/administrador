@@ -1,0 +1,31 @@
+<mat-card>
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
+  <form [formGroup]="form" (submit)="onSavePost()" *ngIf="!isLoading">
+    <mat-form-field>
+      <!-- matInput type="text" formControlName="title" placeholder="Post Title"-->
+      <input matInput formControlName="name" type="text" placeholder="Name" >
+      <mat-error *ngIf="form.get('name').invalid">Please enter a valid name.</mat-error>
+    </mat-form-field>
+
+    <mat-form-field >
+      <input type="url" formControlName="instrumentImage" matInput placeholder="URL de la imagen" >
+      <mat-error *ngIf="form.get('instrumentImage').invalid">Please enter a valid URL.</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input type="number" formControlName="cantidad" matInput placeholder="Cantidad" >
+      <mat-error *ngIf="form.get('cantidad').invalid">Ingresa una cantidad correcta.</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+	  <mat-select placeholder="Categoria" formControlName="category" >
+	    <mat-option *ngFor="let category of categories" [value]="category.name">
+	      {{category.viewValue}}
+	    </mat-option>
+	  </mat-select>
+	  <mat-error *ngIf="form.get('category').invalid">Ingresa la categoria.</mat-error>
+	</mat-form-field>
+
+    <button mat-raised-button color="accent" type="submit" *ngIf="!isLoading">Complete</button>
+  </form>
+</mat-card>

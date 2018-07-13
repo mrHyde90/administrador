@@ -13,6 +13,11 @@ export class InstrumentsService {
 	private maxInstruments = 0;
 	constructor(private http: HttpClient){}
 
+	deleteInstrument(instrumentID: string){
+		return this.http
+			.delete<{message: string}>(`http://localhost:3000${this.contactUrl}/${instrumentID}`)
+	}
+
 	getInstrumentUpdated() {
 		return this.instrumentsUpdated.asObservable();
 	}
@@ -39,6 +44,21 @@ export class InstrumentsService {
 				{instruments: [...this.instruments],
 				instrumentCount: this.maxInstruments});
 		});
+	}
+
+	updateInstrument(instrument_id:string, newInstrument:InstrumentModel){
+		return this.http
+			.put<{message: string}>(`http://localhost:3000${this.contactUrl}/update-all/${instrument_id}`, newInstrument);
+	}
+
+	createInstrument(newInstrument: InstrumentModel){
+		return this.http
+			.post<{message: string}>(`http://localhost:3000${this.contactUrl}`, newInstrument);
+	}
+
+	getInstrument(instrument_id: string){
+		return this.http
+			.get<{instrument: InstrumentModel}>(`http://localhost:3000${this.contactUrl}/${instrument_id}`);
 	}
 
 	updateCantidadInstrument(_id: string, cantidad: number){

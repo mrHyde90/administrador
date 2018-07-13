@@ -23,6 +23,7 @@ export class InstrumentListComponent implements OnInit, OnDestroy {
   isLoading = false;
   currentPage = 1;
   isAuthenticated = false;
+  isAdmin = false;
 	instruments:InstrumentModel[] = [];
   @ViewChild("lola") mdPaginator: MatPaginator;
 
@@ -35,6 +36,7 @@ export class InstrumentListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     console.log("Inicio");
+    this.isAdmin = this.authService.isAdmin();
     this.subsIns = this.instrumentService.getInstrumentUpdated()
       .subscribe((instrumentData: {instruments: InstrumentModel[], instrumentCount: number}) => {
         this.isLoading = false;
@@ -89,6 +91,17 @@ export class InstrumentListComponent implements OnInit, OnDestroy {
     } else {
       this.instrumentService.getInstruments(this.instrumentsPerPage, this.currentPage);
     }
+  }
+
+  deleteInstrument(instrumentID: string){
+    if(!this.isAdmin){
+      return;
+    }
+    console.log(instrumentID);
+    this.instrumentService.deleteInstrument(instrumentID)
+      .subscribe(resultado => {
+        this.instrumentService.getInstrumentsCategories(this.instrumentsPerPage, this.currentPage, this.type);
+      });
   }
 
   ngOnDestroy() {
