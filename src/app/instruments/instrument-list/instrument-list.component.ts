@@ -36,7 +36,6 @@ export class InstrumentListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     console.log("Inicio");
-    this.isAdmin = this.authService.isAdmin();
     this.subsIns = this.instrumentService.getInstrumentUpdated()
       .subscribe((instrumentData: {instruments: InstrumentModel[], instrumentCount: number}) => {
         this.isLoading = false;
@@ -50,7 +49,12 @@ export class InstrumentListComponent implements OnInit, OnDestroy {
       if(paramMap.has("type")){
         this.type = paramMap.get("type");
         this.instrumentService.getInstrumentsCategories(this.instrumentsPerPage, this.currentPage, this.type);
-      } else {
+      } else if (paramMap.has("instrument_type")) {
+        this.isAdmin = this.authService.isAdmin();
+        this.type = paramMap.get("instrument_type");
+        this.instrumentService.getInstrumentsCategories(this.instrumentsPerPage, this.currentPage, this.type);
+      }
+      else {
         this.type = null;
         this.instrumentService.getInstruments(this.instrumentsPerPage, this.currentPage);
       }

@@ -5,17 +5,20 @@
 		  <mat-button-toggle value="italic" (click)="pendientes()">Pendientes</mat-button-toggle>
 		</mat-button-toggle-group>
 	</div>
+	<mat-spinner *ngIf="isLoading"></mat-spinner>
 	<mat-card *ngFor="let request of requests | reverse">
 		<mat-card-header>
 			<mat-card-title>Instrumento solicitado: {{request.instrumentName}}</mat-card-title>
 		</mat-card-header>
 		<mat-card-content>
 			<p>Cantidad solicitada: {{request.cantidad}}</p>
+			<p>Solicitante: {{request.owner.matricula}}</p>
 			<p>Fecha: {{request.created_at | date:'medium'}}</p>
 		</mat-card-content>
 		<mat-card-actions >
-	    		<button mat-raised-button [color]="'primary'" (click)="deleteRequest(request._id)" >Eliminar</button>
-	    		<button mat-raised-button [color]="'primary'" (click)="permitir(request.cantidad, request.instrument_id, request._id)">Permitir</button>
+	    		<button mat-raised-button [color]="'primary'" (click)="deleteRequest(request._id, request.instrument_id, request.cantidad)" >Eliminar</button>
+	    		<button mat-raised-button [color]="'primary'" (click)="permitir(request.cantidad, request.instrument_id, request._id)" *ngIf="isPending()">Permitir</button>
 	  		</mat-card-actions>
 	</mat-card>	
+	<mat-paginator *ngIf="requests.length > 0" [length]="totalRequests" [pageSize]="requestsPerPage" [pageSizeOptions] = "pageSizeOptions" [showFirstLastButtons]="true" (page)="onChangedPage($event)"></mat-paginator>
 </main>

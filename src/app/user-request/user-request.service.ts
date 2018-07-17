@@ -8,8 +8,9 @@ import { Subject } from "rxjs";
 })
 export class UserRequestService {
 	private requests: RequestModel[];
-	private requestsUpdate = new Subject<{requests: RequestModel[]}>();
+	private requestsUpdate = new Subject<{requests: RequestModel[], requestCount: number}>();
 	private baseUrl = `http://localhost:3000/api/request`;
+  private maxRequests = 0;
 
   constructor(private http: HttpClient) { }
 
@@ -17,23 +18,25 @@ export class UserRequestService {
   	return this.requestsUpdate.asObservable();
   }
 
-  getUserRequests(request_type: string, userId: string){
-  	const queryParams = `?request_type=${request_type}`;
+  getUserRequests(request_type: string, userId: string, requestPerPage: number, currentPage: number){
+  	const queryParams = `?request_type=${request_type}&pageSize=${requestPerPage}&page=${currentPage}`;
     this.http
-      .get<{sendRequests: RequestModel[]}>(`${this.baseUrl}/search-user-requests/${userId}${queryParams}`)
+      .get<{maxRequests: number, sendRequests: RequestModel[]}>(`${this.baseUrl}/search-user-requests/${userId}${queryParams}`)
       .subscribe(requestData => {
         this.requests = requestData.sendRequests;
-        this.requestsUpdate.next({requests: [...this.requests]});
+        this.maxRequests = requestData.maxRequests;
+        this.requestsUpdate.next({requests: [...this.requests], requestCount: this.maxRequests});
       });
   }
 
-  getAllRequests(request_type: string){
-    const queryParams = `?request_type=${request_type}`;
+  getAllRequests(request_type: string, requestPerPage: number, currentPage: number){
+    const queryParams = `?request_type=${request_type}&pageSize=${requestPerPage}&page=${currentPage}`;
     this.http
-      .get<{sendRequests: RequestModel[]}>(`${this.baseUrl}/search-all-requests${queryParams}`)
+      .get<{maxRequests: number, sendRequests: RequestModel[]}>(`${this.baseUrl}/search-all-requests${queryParams}`)
       .subscribe(requestData => {
         this.requests = requestData.sendRequests;
-        this.requestsUpdate.next({requests: [...this.requests]});
+        this.maxRequests = requestData.maxRequests;
+        this.requestsUpdate.next({requests: [...this.requests], requestCount: this.maxRequests});
       });
   }
 

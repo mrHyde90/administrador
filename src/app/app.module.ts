@@ -1,3 +1,9 @@
+/*
+  1- poner el borrar solicitud e incrementar la herramienta
+  2- agregar la matricula en el modelo de solicitud
+  3- poner un paginator en solicitudes
+
+*/
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';

@@ -94,6 +94,19 @@ exports.instrument_show = (req, res, next) => {
 	.catch(err => res.status(500).json({error: err}))
 }
 
+exports.increase_instrument = (req, res, next) => {
+	const increase = req.body.cantidad;
+	const id = req.params.id;
+	Instrument.findById(id)
+		.then(foundInstrument => {
+			const nuevaCantidad = foundInstrument.cantidad + increase;
+			Instrument.update({_id: id}, {$set: {cantidad: nuevaCantidad}})
+			.exec()
+			.then(result => res.status(200).json({message: "Update successful", exito: true}))
+			.catch(err => res.status(500).json({error: err}))
+		})
+} 
+
 exports.instrument_update = (req, res, next) => {
 	const restar = req.body.cantidad;
 	const id = req.params.id;

@@ -61,6 +61,12 @@ export class InstrumentsService {
 			.get<{instrument: InstrumentModel}>(`http://localhost:3000${this.contactUrl}/${instrument_id}`);
 	}
 
+	//IncreaseInstrument, instrument_id, request_type, cantidad
+	increaseInstrument(_id: string, cantidad: number){
+		return this.http
+			.put<{message: string}>(`http://localhost:3000${this.contactUrl}/increase/${_id}`, {cantidad: cantidad});
+	}
+
 	updateCantidadInstrument(_id: string, cantidad: number){
 		return this.http
 			.put<{message: string, exito: boolean}>(`http://localhost:3000${this.contactUrl}/${_id}`, {cantidad: cantidad});

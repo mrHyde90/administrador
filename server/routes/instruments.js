@@ -18,6 +18,9 @@ router.delete("/:id", CheckAuth.checkAdmin, InstrumentController.instrument_dele
 //UPDATE ALL INSTRUMENT
 router.put("/update-all/:id", CheckAuth.checkAdmin , InstrumentController.instrument_good_update);
 
+//INCREASE INSTRUMENT
+router.put("/increase/:id", CheckAuth.checkAdmin , InstrumentController.increase_instrument);
+
 //UPDATE INSTRUMENT BY THE USER
 router.put("/:id", CheckAuth.checkAdmin, InstrumentController.instrument_update);
 

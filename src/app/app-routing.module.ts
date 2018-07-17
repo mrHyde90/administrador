@@ -32,7 +32,7 @@ const routes: Routes = [
     {path: "usuarios/edit/:id", component: SignupComponent},
     {path: "solicitudes", component: UserRequestComponent},
     {path: "instruments", component: InstrumentStartComponent, children: [
-      {path: "categories/:type", component: InstrumentListComponent}
+      {path: "categories/:instrument_type", component: InstrumentListComponent}
     ]},
     {path: "instruments/creation", component: InstrumentCreateComponent},
     {path: "instruments/edit/:id", component: InstrumentCreateComponent}
