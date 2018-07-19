@@ -81,6 +81,8 @@ export class InstrumentListComponent implements OnInit, OnDestroy {
           .subscribe(resultado => {
             console.log(resultado);
             this.isLoading = false;
+          }, error => {
+            this.isLoading = false;
           });
       }
     });
@@ -102,9 +104,12 @@ export class InstrumentListComponent implements OnInit, OnDestroy {
       return;
     }
     console.log(instrumentID);
+    this.isLoading = true;
     this.instrumentService.deleteInstrument(instrumentID)
       .subscribe(resultado => {
         this.instrumentService.getInstrumentsCategories(this.instrumentsPerPage, this.currentPage, this.type);
+      }, error => {
+        this.isLoading = false;
       });
   }
 

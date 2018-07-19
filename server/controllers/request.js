@@ -23,7 +23,7 @@ exports.requests_get_all = (req, res, next) => {
 				sendRequests: cleanRequests
 			});
 		})
-		.catch(err => res.status(500).json({error: err}))
+		.catch(err => res.status(500).json({message: "Request Get Failed!!"}))
 }
 //Para el admin
 exports.search_user_requests = (req, res, next) => {
@@ -61,7 +61,7 @@ exports.search_user_requests = (req, res, next) => {
 				maxRequests: count
 			});
 		})
-		.catch(err => res.status(500).json({error: err}))
+		.catch(err => res.status(500).json({message: "Request Get Failed!!"}))
 }
 
 //Para el admin
@@ -99,7 +99,7 @@ exports.search_all_requests = (req, res, next) => {
 				maxRequests: count
 			});
 		})
-		.catch(err => res.status(500).json({error: err}))
+		.catch(err => res.status(500).json({message: "Request Get Failed!!"}))
 }
 
 exports.request_create = (req, res, next) => {
@@ -118,9 +118,9 @@ exports.request_create = (req, res, next) => {
 			});
 			request.save()
 				.then(newRequest => res.status(201).json({message: "Request created"}))
-				.catch(err => res.status(500).json({error: err}))
+				.catch(err => res.status(500).json({message: "Request Save Failed!!"}))
 		})
-		.catch(err => res.status(500).json({error: err}))
+		.catch(err => res.status(500).json({message: "Request Post Failed!!"}))
 	
 }
 
@@ -132,7 +132,7 @@ exports.request_update = (req, res, next) => {
 	        message: "Request updated"
 	      });
 	    })
-	    .catch(err => res.status(500).json({error: err}));
+	    .catch(err => res.status(500).json({message: "Request Put Failed!!"}));
 }
 
 exports.request_delete = (req, res, next) => {
@@ -145,5 +145,5 @@ exports.request_delete = (req, res, next) => {
 				res.status(401).json({ message: "Not authorized!" });
 			}
 		})
-		.catch(err => res.status(500).json({error: err}))
+		.catch(err => res.status(500).json({message: "Request Delete Failed!!"}))
 }

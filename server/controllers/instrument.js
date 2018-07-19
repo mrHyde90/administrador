@@ -35,7 +35,7 @@ exports.instrument_categories = (req, res, next) => {
 			maxInstruments: count
 		});
 	})
-	.catch(err => res.status(500).json({error: err}))
+	.catch(err => res.status(500).json({message: "Instruments Get Failed!!"}))
 }
 
 exports.instruments_get_all = (req, res, next) => {
@@ -73,7 +73,7 @@ exports.instruments_get_all = (req, res, next) => {
 			maxInstruments: count
 		});
 	})
-	.catch(err => res.status(500).json({error: err}))
+	.catch(err => res.status(500).json({message: "Instruments Get Failed!!"}))
 };
 
 exports.instrument_show = (req, res, next) => {
@@ -91,7 +91,7 @@ exports.instrument_show = (req, res, next) => {
 					created_at: foundInstrument.created_at
 				}});
 	})
-	.catch(err => res.status(500).json({error: err}))
+	.catch(err => res.status(500).json({message: "Instruments Get Failed!!"}))
 }
 
 exports.increase_instrument = (req, res, next) => {
@@ -103,7 +103,7 @@ exports.increase_instrument = (req, res, next) => {
 			Instrument.update({_id: id}, {$set: {cantidad: nuevaCantidad}})
 			.exec()
 			.then(result => res.status(200).json({message: "Update successful", exito: true}))
-			.catch(err => res.status(500).json({error: err}))
+			.catch(err => res.status(500).json({message: "Instruments Get Failed!!"}))
 		})
 } 
 
@@ -118,12 +118,12 @@ exports.instrument_update = (req, res, next) => {
 			Instrument.update({_id: id}, {$set: {cantidad: nuevaCantidad}})
 			.exec()
 			.then(result => res.status(200).json({message: "Update successful", exito: true}))
-			.catch(err => res.status(500).json({error: err}))
+			.catch(err => res.status(500).json({message: "Instruments Update Failed!!"}))
 		} else {
-			res.status(400).json({message: "La cantidad es menor a lo que se esperaba", exito: false})
+			res.status(200).json({message: "La cantidad es menor a lo que se esperaba", exito: false})
 		}
 	})
-	.catch(err => res.status(500).json({error: err}))
+	.catch(err => res.status(500).json({message: "Instruments Failed!!"}))
 };
 
 exports.instrument_good_update = (req, res, next) => {
@@ -136,7 +136,7 @@ exports.instrument_good_update = (req, res, next) => {
 	}	
 	Instrument.update({_id: id}, {$set: newInstrument})
 		.then(result => res.status(200).json({message: "Update succesful"}))
-		.catch(err => res.status(500).json({error: err}))
+		.catch(err => res.status(500).json({message: "Instruments Update Failed!!"}))
 }
 
 exports.instrument_create = (req, res, next) => {
@@ -148,7 +148,7 @@ exports.instrument_create = (req, res, next) => {
 	});
 	instrument.save()
 		.then(newInstrument => res.status(201).json({message: "Instrument created"}))
-		.catch(err => res.status(500).json({error: err}));
+		.catch(err => res.status(500).json({message: "Instruments Post Failed!!"}));
 }
 
 exports.instrument_delete = (req, res, next) => {
@@ -161,5 +161,5 @@ exports.instrument_delete = (req, res, next) => {
 				res.status(401).json({ message: "Not authorized!" });
 			}
 		})
-		.catch(err => res.status(500).json({error: err}));
+		.catch(err => res.status(500).json({message: "Instruments Delete Failed!!"}));
 }

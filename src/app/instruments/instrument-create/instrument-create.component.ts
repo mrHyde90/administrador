@@ -5,6 +5,9 @@ import {Category} from '../instrument-search/category.model';
 import {InstrumentModel} from '../instrument.model';
 import {InstrumentsService} from '../instruments.service';
 
+import { MatDialog } from "@angular/material";
+import { ModalGenericComponent } from "../../modal-generic/modal-generic.component";
+
 @Component({
   selector: 'app-instrument-create',
   templateUrl: './instrument-create.component.html',
@@ -24,7 +27,8 @@ export class InstrumentCreateComponent implements OnInit {
   ];
 //"Diodos", "Capacitores", "Transistores", "Herramientas"
   constructor(private route: ActivatedRoute,
-              private instrumentService: InstrumentsService) { }
+              private instrumentService: InstrumentsService,
+              private dialog: MatDialog) { }
 
   ngOnInit() {
   	this.form = new FormGroup({
@@ -80,10 +84,16 @@ export class InstrumentCreateComponent implements OnInit {
         categories: this.form.value.category
       }
     this.isLoading = true;
+    let Message = "";
     if(this.mode === "create"){
       this.instrumentService.createInstrument(newInstrument)
         .subscribe(response => {
           console.log(response);
+          this.isLoading = false;
+          Message = "Instrument created!!";
+          this.dialog.open(ModalGenericComponent, {data: {message: Message}});
+          this.form.reset();
+        }, error => {
           this.isLoading = false;
         })
     } else {
@@ -91,9 +101,12 @@ export class InstrumentCreateComponent implements OnInit {
         .subscribe(response => {
           console.log(response);
           this.isLoading = false;
+          Message = "Instrument Updated!!";
+          this.dialog.open(ModalGenericComponent, {data: {message: Message}});
+        }, error => {
+          this.isLoading = false;
         })
     }
-    this.form.reset();
   }
 
 }

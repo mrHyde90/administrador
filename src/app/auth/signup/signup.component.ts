@@ -5,6 +5,9 @@ import { ActivatedRoute, ParamMap } from "@angular/router";
 import {AuthService} from '../auth.service';
 import {UserService} from '../../user-search/user.service';
 import {UserModel} from '../user.model';
+
+import { MatDialog } from "@angular/material";
+import { ModalGenericComponent } from "../../modal-generic/modal-generic.component";
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
@@ -23,7 +26,8 @@ export class SignupComponent implements OnInit {
 
   constructor(private authService: AuthService,
               private userService: UserService,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute,
+              private dialog: MatDialog) { }
 
   ngOnInit() {
     this.form = new FormGroup({
@@ -69,6 +73,7 @@ export class SignupComponent implements OnInit {
       return;
     }
     console.log(this.mode);
+    let Message = "";
     this.isLoading = true;
     if(this.mode === "create"){
       this.authService.createUser(this.form.value.email, 
@@ -80,7 +85,12 @@ export class SignupComponent implements OnInit {
         .subscribe(result => {
           console.log(result);
           this.isLoading = false;
-        });
+          Message = "User Created!!";
+          this.dialog.open(ModalGenericComponent, {data: {message: Message}});
+          this.form.reset();
+        } , error => {
+        this.isLoading = false;
+      });
     } else{
       this.userService.updateUser(this.user_id, 
           this.form.value.carrera, 
@@ -91,12 +101,11 @@ export class SignupComponent implements OnInit {
         .subscribe(response => {
           console.log(response);
           this.isLoading = false;
-        });
+          Message = "User Updated!!";
+          this.dialog.open(ModalGenericComponent, {data: {message: Message}});
+        } , error => {
+        this.isLoading = false;
+      });
     }
-    this.form.reset();
   }
-
-  /*
-  */
-
 }

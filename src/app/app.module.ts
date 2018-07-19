@@ -49,6 +49,8 @@ import { UserRequestComponent } from './user-request/user-request.component';
 import { InstrumentSearchComponent } from './instruments/instrument-search/instrument-search.component';
 import { InstrumentStartComponent } from './instruments/instrument-start/instrument-start.component';
 import { InstrumentCreateComponent } from './instruments/instrument-create/instrument-create.component';
+import {ErrorInterceptor} from './error-interceptor';
+import {ModalGenericComponent} from './modal-generic/modal-generic.component';
 
 @NgModule({
   declarations: [
@@ -66,9 +68,10 @@ import { InstrumentCreateComponent } from './instruments/instrument-create/instr
     UserRequestComponent,
     InstrumentSearchComponent,
     InstrumentStartComponent,
-    InstrumentCreateComponent
+    InstrumentCreateComponent,
+    ModalGenericComponent
   ],
-  entryComponents: [InstrumentListComponent, ModalComponent],
+  entryComponents: [InstrumentListComponent, ModalComponent, ModalGenericComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -97,7 +100,8 @@ import { InstrumentCreateComponent } from './instruments/instrument-create/instr
     MatAutocompleteModule
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

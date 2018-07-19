@@ -33,9 +33,7 @@ exports.user_signup = (req, res, next) => {
 						});
 					})
 					.catch(err => {
-						res.status(500).json({
-							error: err
-						});
+						res.status(500).json({message: "User  Save Failed!"});
 					})
 			});
 
@@ -43,9 +41,7 @@ exports.user_signup = (req, res, next) => {
 
 	})
 	.catch(err => {
-		res.status(409).json({
-			error: err
-		});
+		res.status(409).json({message: "User  SignUp Failed!"});
 	})
 }
 
@@ -111,7 +107,7 @@ exports.search_users = (req, res, next) => {
 				}
 			});
 		}) 
-		.catch(err => res.status(500).json({error: err}))
+		.catch(err => res.status(500).json({message: "User Get Failed!"}))
 }
 
 exports.search_user_id = (req, res, next) => {
@@ -129,7 +125,7 @@ exports.search_user_id = (req, res, next) => {
 				}
 			});
 		}) 
-		.catch(err => res.status(500).json({error: err}))
+		.catch(err => res.status(500).json({message: "User Get Failed!"}))
 }
 
 exports.edit_user = (req, res, next) => {
@@ -152,7 +148,7 @@ exports.edit_user = (req, res, next) => {
 	        res.status(401).json({ message: "Not authorized!" });
 	      }
 	    })
-		 .catch(err => res.status(500).json({error: err}))
+		 .catch(err => res.status(500).json({message: "User Put Failed!"}))
 }
 
 exports.delete_user = (req, res, next) => {
@@ -161,5 +157,5 @@ exports.delete_user = (req, res, next) => {
 		.then(results => res.status(200).json({
 			message: "User deleted"
 		}))
-		.catch(err => res.status(500).json({error: err}))
+		.catch(err => res.status(500).json({message: "User Delete Failed!"}))
 }

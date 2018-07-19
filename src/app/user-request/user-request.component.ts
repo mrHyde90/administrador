@@ -50,6 +50,7 @@ export class UserRequestComponent implements OnInit {
   }
 
   deleteRequest(request_id: string, instrument_id: string, cantidad: number){
+    this.isLoading = true;
     this.userRequestService.deleteRequest(request_id)
       .subscribe(() => {
         if(this.request_type === "accept"){
@@ -61,6 +62,8 @@ export class UserRequestComponent implements OnInit {
               } else {
                 this.userRequestService.getUserRequests(this.request_type, this.userId, this.requestsPerPage, this.currentPage);
               }
+            }, error => {
+              this.isLoading = false;
             });
         } else {
           console.log("Pasaste por aqui");
@@ -70,6 +73,8 @@ export class UserRequestComponent implements OnInit {
             this.userRequestService.getUserRequests(this.request_type, this.userId, this.requestsPerPage, this.currentPage);
           }
         }
+      }, error => {
+        this.isLoading = false;
       });
   }
 
@@ -88,9 +93,11 @@ export class UserRequestComponent implements OnInit {
     if(this.request_type === "accept"){
       return;
     }
+    this.isLoading = true;
     this.instrumentsService
       .updateCantidadInstrument(instrument_id, cantidad)
         .subscribe(instrumentsData => {
+          this.isLoading = false;
           const message = instrumentsData.message;
           const exito = instrumentsData.exito;
           if(exito){
@@ -100,6 +107,8 @@ export class UserRequestComponent implements OnInit {
             console.log("No se pudo actualizar, la cantidad que se pide es mayor a la actual");
           }
           console.log(message);
+        }, error => {
+          this.isLoading = false;
         });
   }
 

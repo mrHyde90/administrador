@@ -12,6 +12,7 @@ import { Subscription } from 'rxjs';
 export class RequestListComponent implements OnInit {
 	requests: RequestModel[];
   allow_delete = false;
+  isLoading = false;
   private reqSub: Subscription;
   private type_request: string;
 
@@ -19,9 +20,11 @@ export class RequestListComponent implements OnInit {
   				private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.isLoading = true;
     this.reqSub = this.requestService.getRequestsUpdate()
       .subscribe((requestData: {requests: RequestModel[]}) => {
         this.requests = requestData.requests;
+        this.isLoading = false;
       });
 
   	this.route.paramMap.subscribe((paramMap: ParamMap) => {
@@ -37,9 +40,13 @@ export class RequestListComponent implements OnInit {
   }
 
   deleteRequest(request_id: string){
+    this.isLoading = true;
     this.requestService.deleteRequest(request_id)
       .subscribe(() => {
+        this.isLoading = false;
         this.requestService.getRequests(this.type_request);
+      }, error => {
+        this.isLoading = false;
       });
   }
 

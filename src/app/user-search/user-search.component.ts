@@ -16,6 +16,7 @@ export class UserSearchComponent implements OnInit {
 		user_type: ""
 	};
 	mostrar = false;
+  isLoading = false;
 
 
   constructor(private userService: UserService) { }
@@ -24,9 +25,13 @@ export class UserSearchComponent implements OnInit {
   }
 
   eliminarUsuario(user_id: string){
+    this.isLoading = true;
     this.userService.deleteUser(user_id)
       .subscribe(() => {
+        this.isLoading = false;
         this.clearAll();
+      }, error => {
+        this.isLoading = false;
       });
   }
 
@@ -44,11 +49,15 @@ export class UserSearchComponent implements OnInit {
   searchUser(inputMatricula: HTMLInputElement){
   	this.clearAll();
   	console.log(inputMatricula.value);
+    this.isLoading = true;
   	this.userService.searchUsers(inputMatricula.value)
   		.subscribe(results => {
   			this.user = results.user;
   			this.mostrar = true;
-  		});
+        this.isLoading = false;
+  		}, error => {
+        this.isLoading = false;
+      });
   }
 
 }
