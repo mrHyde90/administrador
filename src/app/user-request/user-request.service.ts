@@ -3,13 +3,15 @@ import {RequestModel} from '../request/request.model';
 import { HttpClient} from "@angular/common/http";
 import { Subject } from "rxjs";
 
+import { environment } from "../../environments/environment";
+
 @Injectable({
   providedIn: 'root'
 })
 export class UserRequestService {
 	private requests: RequestModel[];
 	private requestsUpdate = new Subject<{requests: RequestModel[], requestCount: number}>();
-	private baseUrl = `http://localhost:3000/api/request`;
+	private baseUrl = environment.apiUrl + "/request";
   private maxRequests = 0;
 
   constructor(private http: HttpClient) { }

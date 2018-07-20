@@ -120,7 +120,7 @@ exports.instrument_update = (req, res, next) => {
 			.then(result => res.status(200).json({message: "Update successful", exito: true}))
 			.catch(err => res.status(500).json({message: "Instruments Update Failed!!"}))
 		} else {
-			res.status(200).json({message: "La cantidad es menor a lo que se esperaba", exito: false})
+			res.status(400).json({message: "La cantidad es menor a lo que se esperaba", exito: false})
 		}
 	})
 	.catch(err => res.status(500).json({message: "Instruments Failed!!"}))

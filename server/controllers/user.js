@@ -47,6 +47,7 @@ exports.user_signup = (req, res, next) => {
 
 exports.user_signin = (req, res, next) => {
 	let fetchedUser;
+	console.log(req.body.email);
 	User.findOne({email: req.body.email})
 		.then(user => {
 			if(!user){
@@ -86,6 +87,7 @@ exports.user_signin = (req, res, next) => {
 			});
 		})
 		.catch(err => {
+			console.log("LOL fallaste");
 			res.status(401).json({
 				message: "Auth failed"
 			})
@@ -142,7 +144,7 @@ exports.edit_user = (req, res, next) => {
 	User.updateOne({_id: userId}, user)
 		 .then(result => {
 		 	console.log("Dentro del updateOne");
-	      if (result.nModified > 0) {
+	      if (result.n > 0) {
 	        res.status(200).json({ message: "Update successful!" });
 	      } else {
 	        res.status(401).json({ message: "Not authorized!" });

@@ -62,7 +62,7 @@ exports.checkDelete = (req, res, next) => {
                 console.log("dentro del find");
                 console.log(req.userData);
                 console.log(foundRequest);
-                if(foundRequest.request_type === "pending" && foundRequest.user_id.equals(req.userData.userId)){
+                if(foundRequest.request_type === "pending" && foundRequest.owner.id.equals(req.userData.userId)){
                     next();
                 } else{
                     return res.status(401).json({
@@ -72,18 +72,3 @@ exports.checkDelete = (req, res, next) => {
             } )
             .catch(err => res.status(500).json({error: err}))
 }
-
-/*
-{
-                console.log("dentro del find");
-                console.log(req.userData);
-                console.log(foundRequest);
-                if(foundRequest.request_type === "pending" && foundRequest.user_id === req.userData.userId){
-                    next();
-                } else{
-                    return res.status(401).json({
-                        message: "no eres el Failed"
-                    });
-                }
-            }
-*/

@@ -4,18 +4,19 @@ import { Subject } from "rxjs";
 import { map } from "rxjs/operators";
 import { Router } from "@angular/router";
 import {InstrumentModel} from './instrument.model';
+import { environment } from "../../environments/environment";
 
 @Injectable({providedIn: "root"})
 export class InstrumentsService {
 	private instruments: InstrumentModel[] = [];
 	private instrumentsUpdated = new Subject<{instruments: InstrumentModel[], instrumentCount: number}>();
-	private contactUrl = "/api/instruments";
+	private contactUrl = environment.apiUrl + "/instruments";
 	private maxInstruments = 0;
 	constructor(private http: HttpClient){}
 
 	deleteInstrument(instrumentID: string){
 		return this.http
-			.delete<{message: string}>(`http://localhost:3000${this.contactUrl}/${instrumentID}`)
+			.delete<{message: string}>(`${this.contactUrl}/${instrumentID}`)
 	}
 
 	getInstrumentUpdated() {
@@ -24,7 +25,7 @@ export class InstrumentsService {
 
 	getInstruments(instrumentsPerPage: number, currentPage: number) {
 		const queryParams = `?pageSize=${instrumentsPerPage}&page=${currentPage}`;
-		this.http.get<{maxInstruments: number, instruments: InstrumentModel[]}>(`http://localhost:3000${this.contactUrl}` + queryParams)
+		this.http.get<{maxInstruments: number, instruments: InstrumentModel[]}>(`${this.contactUrl}` + queryParams)
 		.subscribe(instrumentsData => {
 			this.instruments = instrumentsData.instruments;
 			this.maxInstruments = instrumentsData.maxInstruments;
@@ -36,7 +37,7 @@ export class InstrumentsService {
 
 	getInstrumentsCategories(instrumentsPerPage: number, currentPage: number, categoria: string) {
 		const queryParams = `?pageSize=${instrumentsPerPage}&page=${currentPage}&categoria=${categoria}`;
-		this.http.get<{maxInstruments: number, instruments: InstrumentModel[]}>(`http://localhost:3000${this.contactUrl}/categories` + queryParams)
+		this.http.get<{maxInstruments: number, instruments: InstrumentModel[]}>(`${this.contactUrl}/categories` + queryParams)
 		.subscribe(instrumentsData => {
 			this.instruments = instrumentsData.instruments;
 			this.maxInstruments = instrumentsData.maxInstruments;
@@ -48,27 +49,27 @@ export class InstrumentsService {
 
 	updateInstrument(instrument_id:string, newInstrument:InstrumentModel){
 		return this.http
-			.put<{message: string}>(`http://localhost:3000${this.contactUrl}/update-all/${instrument_id}`, newInstrument);
+			.put<{message: string}>(`${this.contactUrl}/update-all/${instrument_id}`, newInstrument);
 	}
 
 	createInstrument(newInstrument: InstrumentModel){
 		return this.http
-			.post<{message: string}>(`http://localhost:3000${this.contactUrl}`, newInstrument);
+			.post<{message: string}>(`${this.contactUrl}`, newInstrument);
 	}
 
 	getInstrument(instrument_id: string){
 		return this.http
-			.get<{instrument: InstrumentModel}>(`http://localhost:3000${this.contactUrl}/${instrument_id}`);
+			.get<{instrument: InstrumentModel}>(`${this.contactUrl}/${instrument_id}`);
 	}
 
 	//IncreaseInstrument, instrument_id, request_type, cantidad
 	increaseInstrument(_id: string, cantidad: number){
 		return this.http
-			.put<{message: string}>(`http://localhost:3000${this.contactUrl}/increase/${_id}`, {cantidad: cantidad});
+			.put<{message: string}>(`${this.contactUrl}/increase/${_id}`, {cantidad: cantidad});
 	}
 
 	updateCantidadInstrument(_id: string, cantidad: number){
 		return this.http
-			.put<{message: string, exito: boolean}>(`http://localhost:3000${this.contactUrl}/${_id}`, {cantidad: cantidad});
+			.put<{message: string, exito: boolean}>(`${this.contactUrl}/${_id}`, {cantidad: cantidad});
 	}
 }

@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import {RequestModel} from './request.model';
 import { HttpClient} from "@angular/common/http";
 import { Subject } from "rxjs";
+import { environment } from "../../environments/environment";
 @Injectable({
   providedIn: 'root'
 })
 export class RequestService {
 	private requests: RequestModel[];
 	private requestsUpdate = new Subject<{requests: RequestModel[]}>();
-	baseUrl = "/api/request";
+	baseUrl = environment.apiUrl + "/request";
 
   constructor(private http: HttpClient) { }
 
@@ -19,7 +20,7 @@ export class RequestService {
   getRequests(request_type: string){
   	const queryParams = `?request_type=${request_type}`;
   	this.http
-  		.get<{sendRequests: RequestModel[]}>(`http://localhost:3000${this.baseUrl}` + queryParams)
+  		.get<{sendRequests: RequestModel[]}>(`${this.baseUrl}` + queryParams)
   		.subscribe(requestData => {
   			this.requests = requestData.sendRequests;
   			this.requestsUpdate.next({requests: [...this.requests]});
@@ -33,12 +34,13 @@ export class RequestService {
   		instrument_id: instrument_id
   	};
   	return this.http
-  		.post<{message: string}>(`http://localhost:3000${this.baseUrl}`, newRequest);
+  		.post<{message: string}>(`${this.baseUrl}`, newRequest);
   }
 
   deleteRequest(request_id: string){
+    console.log(request_id);
     return this.http
-      .delete(`http://localhost:3000${this.baseUrl}/${request_id}`)
+      .delete(`${this.baseUrl}/${request_id}`)
   }
 
   getRequest(request_type: string){

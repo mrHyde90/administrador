@@ -5,11 +5,13 @@ import { Subject } from "rxjs";
 
 import {AuthModel} from './auth.model';
 import {UserModel} from './user.model';
+
+import { environment } from "../../environments/environment";
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-	private base_url = "/api/user";
+	private base_url = environment.apiUrl + "/user";
 	private token: string;
 	private isAuthenticated = false;
 	private tokenTimer: any;
@@ -49,14 +51,14 @@ export class AuthService {
   		carrera: carrera, 
   		name: name
   	};
-  	return this.http.post(`http://localhost:3000${this.base_url}/signup`, usuario);
+  	return this.http.post(`${this.base_url}/signup`, usuario);
   }
 
   login(email: string, password: string){
   	const authData: AuthModel = {email: email, password: password};
   	this.http
   		.post<{token: string, expiresIn: number, userData: UserModel}>(
-  			`http://localhost:3000${this.base_url}/signin`,
+  			`${this.base_url}/signin`,
   			 authData
   		)
   		.subscribe(response => {
