@@ -49,7 +49,7 @@ export class InstrumentsService {
 
 	updateInstrument(instrument_id:string, newInstrument:InstrumentModel){
 		return this.http
-			.put<{message: string}>(`${this.contactUrl}/update-all/${instrument_id}`, newInstrument);
+			.put<{message: string}>(`${this.contactUrl}/${instrument_id}`, newInstrument);
 	}
 
 	createInstrument(newInstrument: InstrumentModel){
@@ -70,6 +70,6 @@ export class InstrumentsService {
 
 	updateCantidadInstrument(_id: string, cantidad: number){
 		return this.http
-			.put<{message: string, exito: boolean}>(`${this.contactUrl}/${_id}`, {cantidad: cantidad});
+			.put<{message: string, exito: boolean}>(`${this.contactUrl}/decrease/${_id}`, {cantidad: cantidad});
 	}
 }

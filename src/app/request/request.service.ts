@@ -38,7 +38,6 @@ export class RequestService {
   }
 
   deleteRequest(request_id: string){
-    console.log(request_id);
     return this.http
       .delete(`${this.baseUrl}/${request_id}`)
   }

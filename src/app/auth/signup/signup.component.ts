@@ -68,11 +68,9 @@ export class SignupComponent implements OnInit {
   }
 
   onSavePost(){
-    console.log(this.form.invalid);
     if(this.form.invalid){
       return;
     }
-    console.log(this.mode);
     let Message = "";
     this.isLoading = true;
     if(this.mode === "create"){
@@ -83,7 +81,6 @@ export class SignupComponent implements OnInit {
           this.form.value.name
         )
         .subscribe(result => {
-          console.log(result);
           this.isLoading = false;
           Message = "User Created!!";
           this.dialog.open(ModalGenericComponent, {data: {message: Message}});
@@ -99,7 +96,6 @@ export class SignupComponent implements OnInit {
           this.form.value.name
         )
         .subscribe(response => {
-          console.log(response);
           this.isLoading = false;
           Message = "User Updated!!";
           this.dialog.open(ModalGenericComponent, {data: {message: Message}});

@@ -41,7 +41,6 @@ export class RequestListComponent implements OnInit {
 
   deleteRequest(request_id: string){
     this.isLoading = true;
-    console.log(request_id);
     this.requestService.deleteRequest(request_id)
       .subscribe(() => {
         this.isLoading = false;

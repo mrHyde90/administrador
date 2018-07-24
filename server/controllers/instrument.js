@@ -43,10 +43,7 @@ exports.instruments_get_all = (req, res, next) => {
 	const currentPage = +req.query.page;
 	const instrumentQuery = Instrument.find();
 	let fetchedIntruments;
-	console.log(pageSize);
-	console.log(currentPage);
 	if(pageSize && currentPage ){
-		console.log("Si entro aqui");
 
 		instrumentQuery
 			.skip(pageSize * (currentPage - 1))
@@ -80,8 +77,6 @@ exports.instrument_show = (req, res, next) => {
 	const instrument_id = req.params.id;
 	Instrument.findById(instrument_id)
 	.then(foundInstrument => {
-		console.log("Dentro del instrument_show");
-		console.log(foundInstrument);
 		res.status(200).json({instrument: {
 					_id: foundInstrument._id,
 					name: foundInstrument.name,
@@ -107,7 +102,7 @@ exports.increase_instrument = (req, res, next) => {
 		})
 } 
 
-exports.instrument_update = (req, res, next) => {
+exports.decrease_instrument = (req, res, next) => {
 	const restar = req.body.cantidad;
 	const id = req.params.id;
 	Instrument.findById(id)
@@ -126,7 +121,7 @@ exports.instrument_update = (req, res, next) => {
 	.catch(err => res.status(500).json({message: "Instruments Failed!!"}))
 };
 
-exports.instrument_good_update = (req, res, next) => {
+exports.instrument_update = (req, res, next) => {
 	const id = req.params.id;
 	const newInstrument = {
 		name: req.body.name,

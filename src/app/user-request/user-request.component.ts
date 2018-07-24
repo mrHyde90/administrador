@@ -30,8 +30,6 @@ export class UserRequestComponent implements OnInit {
   ngOnInit() {
     this.reqSub = this.userRequestService.getRequestsUpdate()
       .subscribe((requestData: {requests: RequestModel[], requestCount: number}) => {
-        console.log("Dentro del getRequest");
-        console.log(requestData.requests);
         this.isLoading = false;
         this.requests = requestData.requests;
         this.totalRequests = requestData.requestCount;
@@ -45,6 +43,14 @@ export class UserRequestComponent implements OnInit {
     });
   }
 
+  updateFrontPage(){
+    if(this.allRequests){
+      this.userRequestService.getAllRequests(this.request_type, this.requestsPerPage, this.currentPage);
+    } else {
+      this.userRequestService.getUserRequests(this.request_type, this.userId, this.requestsPerPage, this.currentPage);
+    }
+  }
+
   isPending(){
     return this.request_type === "pending";
   }
@@ -56,22 +62,12 @@ export class UserRequestComponent implements OnInit {
         if(this.request_type === "accept"){
           this.instrumentsService.increaseInstrument(instrument_id, cantidad)
             .subscribe(response => {
-              console.log(response);
-              if(this.allRequests){
-                this.userRequestService.getAllRequests(this.request_type, this.requestsPerPage, this.currentPage);
-              } else {
-                this.userRequestService.getUserRequests(this.request_type, this.userId, this.requestsPerPage, this.currentPage);
-              }
+              this.updateFrontPage();
             }, error => {
               this.isLoading = false;
             });
         } else {
-          console.log("Pasaste por aqui");
-          if(this.allRequests){
-            this.userRequestService.getAllRequests(this.request_type, this.requestsPerPage, this.currentPage);
-          } else {
-            this.userRequestService.getUserRequests(this.request_type, this.userId, this.requestsPerPage, this.currentPage);
-          }
+          this.updateFrontPage();
         }
       }, error => {
         this.isLoading = false;
@@ -82,11 +78,7 @@ export class UserRequestComponent implements OnInit {
     this.isLoading = true;
     this.currentPage = pageData.pageIndex + 1;
     this.requestsPerPage = pageData.pageSize;
-    if(this.allRequests){
-      this.userRequestService.getAllRequests(this.request_type, this.requestsPerPage, this.currentPage);
-    } else {
-      this.userRequestService.getUserRequests(this.request_type, this.userId, this.requestsPerPage, this.currentPage);
-    }
+    this.updateFrontPage();
   }
 
   permitir(cantidad: number, instrument_id: string, request_id:string){
@@ -101,43 +93,23 @@ export class UserRequestComponent implements OnInit {
           const message = instrumentsData.message;
           const exito = instrumentsData.exito;
           if(exito){
-            console.log("Si se pudo actualizar");
-            this.updateRequest(request_id);
-          } else {
-            console.log("No se pudo actualizar, la cantidad que se pide es mayor a la actual");
-          }
-          console.log(message);
+            this.userRequestService.updateRequest(request_id)
+              .subscribe(() => {
+                this.updateFrontPage();
+              });
+          } 
         }, error => {
           this.isLoading = false;
         });
   }
 
-  private updateRequest(request_id: string){
-    this.userRequestService.updateRequest(request_id)
-      .subscribe(() => {
-        if(this.allRequests){
-          this.userRequestService.getAllRequests(this.request_type, this.requestsPerPage, this.currentPage);
-        } else {
-          this.userRequestService.getUserRequests(this.request_type, this.userId, this.requestsPerPage, this.currentPage);
-        }
-      });
-  }
-
   prestamos(){
     this.request_type = "accept";
-    if(this.allRequests){
-      this.userRequestService.getAllRequests(this.request_type, this.requestsPerPage, this.currentPage);
-    } else {
-      this.userRequestService.getUserRequests(this.request_type, this.userId, this.requestsPerPage, this.currentPage);
-    }
+    this.updateFrontPage();
   }
 
   pendientes(){
     this.request_type = "pending";
-    if(this.allRequests){
-      this.userRequestService.getAllRequests(this.request_type, this.requestsPerPage, this.currentPage);
-    } else {
-      this.userRequestService.getUserRequests(this.request_type, this.userId, this.requestsPerPage, this.currentPage);
-    }
+    this.updateFrontPage();
   }
 }

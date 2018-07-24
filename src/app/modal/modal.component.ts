@@ -24,7 +24,6 @@ export class ModalComponent  {
   		} else {
   			const cantidadNumerica: number = parseInt(cantidadString);
   			if(cantidadNumerica <= this.data.cantidad){
-  				console.log("Si se pudo");
   				this.dialogRef.close(cantidadNumerica);
   			} else {
   				this.buenFormato = false;

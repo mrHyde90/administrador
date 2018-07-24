@@ -19,10 +19,8 @@ export class ProfileGuard implements CanActivate {
   ): boolean | Observable<boolean> | Promise<boolean> {
     const isAuth = this.authService.getAuth();
     if (!isAuth) {
-      console.log(isAuth);
       this.router.navigate(['/']);
     }
-    console.log(isAuth);
     return isAuth;
   }
 }

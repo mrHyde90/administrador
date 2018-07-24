@@ -86,13 +86,11 @@ export class AuthService {
     if (!authInformation) {
       return;
     }
-    console.log("Bienvenido usuario");
     const now = new Date();
     const expiresIn = authInformation.expirationDate.getTime() - now.getTime();
     if (expiresIn > 0) {
       this.token = authInformation.token;
       this.userData = authInformation.userData;
-      console.log(this.userData);
       this.isAuthenticated = true;
       this.setAuthTimer(expiresIn / 1000);
       this.authStatusListener.next(true);
@@ -111,7 +109,6 @@ export class AuthService {
 
   //poner la hora de expiracion del token
   private setAuthTimer(duration: number){
-  	console.log("duracion: " + duration);
   	this.tokenTimer = setTimeout(() => {
   		this.logout();
   	}, duration * 1000);
@@ -119,8 +116,6 @@ export class AuthService {
 
   //usar el localstorage para guardar el token y la fecha de expiracion
   private saveAuthData(token: string, expirationDate: Date, userData: UserModel) {
-    console.log("Dentro del saveAuth");
-    console.log(userData);
     localStorage.setItem("token", token);
     localStorage.setItem("expiration", expirationDate.toISOString());
     localStorage.setItem("userData", JSON.stringify(userData));
@@ -137,8 +132,6 @@ export class AuthService {
     const token = localStorage.getItem("token");
     const expirationDate = localStorage.getItem("expiration");
     const userData: UserModel = JSON.parse(localStorage.getItem("userData"));
-    console.log("Dentro del getAuth");
-    console.log(userData);
     if (!token || !expirationDate) {
       return;
     }

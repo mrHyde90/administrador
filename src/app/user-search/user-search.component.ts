@@ -48,7 +48,6 @@ export class UserSearchComponent implements OnInit {
 
   searchUser(inputMatricula: HTMLInputElement){
   	this.clearAll();
-  	console.log(inputMatricula.value);
     this.isLoading = true;
   	this.userService.searchUsers(inputMatricula.value)
   		.subscribe(results => {

@@ -4,7 +4,6 @@ const Request = require("../models/request");
 exports.checkAuth = (req, res, next) => {
     try {
         //para quitar el bearer
-        console.log("estas dentro del check");
         const token = req.headers.authorization.split(" ")[1];
         const decoded = jwt.verify(token, "secret_this_should_be_longer");
         req.userData = decoded;
@@ -19,10 +18,8 @@ exports.checkAuth = (req, res, next) => {
 exports.checkAdmin = (req, res, next) => {
     try {
         //para quitar el bearer
-        console.log("estas dentro del check");
         const token = req.headers.authorization.split(" ")[1];
         const decoded = jwt.verify(token, "secret_this_should_be_longer");
-        console.log(decoded);
         req.userData = decoded;
 
     } catch (error) {
@@ -42,7 +39,6 @@ exports.checkAdmin = (req, res, next) => {
 exports.checkDelete = (req, res, next) => {
     try {
         //para quitar el bearer
-        console.log("estas dentro del check");
         const token = req.headers.authorization.split(" ")[1];
         const decoded = jwt.verify(token, "secret_this_should_be_longer");
         req.userData = decoded;
@@ -52,16 +48,12 @@ exports.checkDelete = (req, res, next) => {
         });
     }
     const requestId = req.params.id;
-        console.log("Este es el " + requestId);
         if(req.userData.user_type === "Admin"){
             next();
         }
         Request.findById({_id: requestId})
             .exec()
             .then(foundRequest => {
-                console.log("dentro del find");
-                console.log(req.userData);
-                console.log(foundRequest);
                 if(foundRequest.request_type === "pending" && foundRequest.owner.id.equals(req.userData.userId)){
                     next();
                 } else{

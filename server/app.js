@@ -9,6 +9,7 @@ const requestRouter = require("./routes/request");
 //const seedDB = require("./seed");
 //base de datos
 const url = "mongodb://localhost/administrador";
+//mongodb://a00516283:Neverreal1995@ds257858.mlab.com:57858/administrador
 mongoose.connect( process.env.MONGODB_URI || url);
 mongoose.Promise = global.Promise;
 

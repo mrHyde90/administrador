@@ -7,7 +7,6 @@ exports.requests_get_all = (req, res, next) => {
 	const userId = req.userData.userId;
 	Request.find({"owner.id": userId, request_type: request_type})
 		.then(requests => {
-			console.log(requests);
 			const cleanRequests = requests.map(generateRequest => {
 				return {
 					_id: generateRequest._id,
@@ -103,7 +102,6 @@ exports.search_all_requests = (req, res, next) => {
 }
 
 exports.request_create = (req, res, next) => {
-	console.log("Estas dentro del request_create");
 	const userId = req.userData.userId;
 	User.findById(userId)
 		.then(foundUser => {

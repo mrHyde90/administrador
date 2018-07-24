@@ -15,14 +15,14 @@ router.post("/", CheckAuth.checkAdmin, InstrumentController.instrument_create);
 //DELETE INSTRUMENT
 router.delete("/:id", CheckAuth.checkAdmin, InstrumentController.instrument_delete);
 
-//UPDATE ALL INSTRUMENT
-router.put("/update-all/:id", CheckAuth.checkAdmin , InstrumentController.instrument_good_update);
-
 //INCREASE INSTRUMENT
 router.put("/increase/:id", CheckAuth.checkAdmin , InstrumentController.increase_instrument);
 
 //UPDATE INSTRUMENT BY THE USER
-router.put("/:id", CheckAuth.checkAdmin, InstrumentController.instrument_update);
+router.put("/decrease/:id", CheckAuth.checkAdmin, InstrumentController.decrease_instrument);
+
+//UPDATE ALL INSTRUMENT
+router.put("/:id", CheckAuth.checkAdmin , InstrumentController.instrument_update);
 
 //GET INSTRUMENT
 router.get("/:id", CheckAuth.checkAdmin, InstrumentController.instrument_show);

@@ -43,7 +43,6 @@ export class InstrumentSearchComponent implements OnInit {
   }
 
   onSavePost(){
-  	console.log(this.myControl.value.name);
     this.router.navigate(["categories", this.myControl.value.name], {relativeTo: this.route} );
   }
 

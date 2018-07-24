@@ -41,13 +41,9 @@ export class InstrumentCreateComponent implements OnInit {
       if(paramMap.has("id")){
         this.mode = "edit";
         this.instrument_id = paramMap.get("id");
-        console.log("Conociendo el id");
-        console.log(this.instrument_id);
         this.isLoading = true;
         this.instrumentService.getInstrument(this.instrument_id)
           .subscribe(instrumentData => {
-            console.log("Dentro del subscribe");
-            console.log(instrumentData);
             this.isLoading = false;
             this.instrument = {
               name: instrumentData.instrument.name,
@@ -55,8 +51,6 @@ export class InstrumentCreateComponent implements OnInit {
               cantidad: instrumentData.instrument.cantidad,
               categories: instrumentData.instrument.categories
             };
-            console.log("Vergas");
-            console.log(this.instrument);
             this.form.setValue({
               name: this.instrument.name,
               instrumentImage: this.instrument.instrumentImage,
@@ -72,8 +66,6 @@ export class InstrumentCreateComponent implements OnInit {
   }
 
   onSavePost(){
-  	console.log(this.form.value);
-    console.log(this.form.invalid);
     if(this.form.invalid){
       return;
     }
@@ -88,7 +80,6 @@ export class InstrumentCreateComponent implements OnInit {
     if(this.mode === "create"){
       this.instrumentService.createInstrument(newInstrument)
         .subscribe(response => {
-          console.log(response);
           this.isLoading = false;
           Message = "Instrument created!!";
           this.dialog.open(ModalGenericComponent, {data: {message: Message}});
@@ -99,7 +90,6 @@ export class InstrumentCreateComponent implements OnInit {
     } else {
       this.instrumentService.updateInstrument(this.instrument_id, newInstrument)
         .subscribe(response => {
-          console.log(response);
           this.isLoading = false;
           Message = "Instrument Updated!!";
           this.dialog.open(ModalGenericComponent, {data: {message: Message}});

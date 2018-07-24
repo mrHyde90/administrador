@@ -35,7 +35,6 @@ export class InstrumentListComponent implements OnInit, OnDestroy {
               private requestService: RequestService) { }
 
   ngOnInit() {
-    console.log("Inicio");
     this.subsIns = this.instrumentService.getInstrumentUpdated()
       .subscribe((instrumentData: {instruments: InstrumentModel[], instrumentCount: number}) => {
         this.isLoading = false;
@@ -79,7 +78,6 @@ export class InstrumentListComponent implements OnInit, OnDestroy {
         this.isLoading = true;
         this.requestService.createRequest(this.instruments[index].name, cantidad, this.instruments[index]._id)
           .subscribe(resultado => {
-            console.log(resultado);
             this.isLoading = false;
           }, error => {
             this.isLoading = false;
@@ -103,7 +101,6 @@ export class InstrumentListComponent implements OnInit, OnDestroy {
     if(!this.isAdmin){
       return;
     }
-    console.log(instrumentID);
     this.isLoading = true;
     this.instrumentService.deleteInstrument(instrumentID)
       .subscribe(resultado => {

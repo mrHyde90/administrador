@@ -24,7 +24,6 @@ export class SigninComponent implements OnInit {
 
   onLogin(form: NgForm){
   	if(form.invalid){
-  		console.log("Lol");
   		return;
   	}
   	console.log(form);
